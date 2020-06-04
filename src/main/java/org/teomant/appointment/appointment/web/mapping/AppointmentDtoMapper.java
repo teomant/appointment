@@ -1,10 +1,9 @@
 package org.teomant.appointment.appointment.web.mapping;
 
-import org.teomant.appointment.appointment.web.dto.AppointmentResponseDto;
-import org.teomant.appointment.appointment.web.dto.AppointmentRequestDto;
 import org.teomant.appointment.appointment.domain.model.Appointment;
+import org.teomant.appointment.appointment.web.dto.AppointmentRequestDto;
+import org.teomant.appointment.appointment.web.dto.AppointmentResponseDto;
 
-import java.time.OffsetDateTime;
 import java.util.stream.Collectors;
 
 public class AppointmentDtoMapper {

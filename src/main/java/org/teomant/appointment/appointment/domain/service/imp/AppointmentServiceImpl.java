@@ -3,12 +3,10 @@ package org.teomant.appointment.appointment.domain.service.imp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.teomant.appointment.appointment.domain.model.Appointment;
-import org.teomant.appointment.appointment.domain.model.Option;
 import org.teomant.appointment.appointment.domain.repository.AppointmentRepository;
 import org.teomant.appointment.appointment.domain.service.AppointmentService;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.time.OffsetDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +16,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Appointment create(Appointment appointment) {
+        appointment.setCreated(OffsetDateTime.now());
         return appointmentRepository.save(appointment);
     }
 

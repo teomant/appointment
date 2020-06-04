@@ -2,11 +2,12 @@ package org.teomant.appointment.appointment.persistance.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.teomant.appointment.appointment.domain.model.Appointment;
-import org.teomant.appointment.appointment.persistance.model.AppointmentEntity;
+import org.teomant.appointment.vote.persistance.model.VoteEntity;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -28,4 +29,7 @@ public class OptionEntity {
     @ManyToOne
     @JoinColumn(name = "appointment_id")
     private AppointmentEntity appointment;
+
+    @OneToMany(mappedBy = "option", cascade = CascadeType.ALL)
+    private Set<VoteEntity> votes = new HashSet<>();
 }

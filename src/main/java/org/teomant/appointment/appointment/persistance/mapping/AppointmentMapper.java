@@ -17,7 +17,9 @@ public class AppointmentMapper {
         model.setLatitude(entity.getLatitude());
         model.setLongitude(entity.getLongitude());
         model.setTill(entity.getTill());
-        model.setOptions(entity.getOptions().stream().map(optionMapper::toModel).collect(Collectors.toSet()));
+        model.setOptions(entity.getOptions().stream()
+                .map(optionMapper::toModel)
+                .collect(Collectors.toSet()));
 
         return model;
     }

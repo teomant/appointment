@@ -3,8 +3,8 @@ package org.teomant.appointment.appointment.web.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.teomant.appointment.appointment.domain.service.AppointmentService;
-import org.teomant.appointment.appointment.web.dto.AppointmentResponseDto;
 import org.teomant.appointment.appointment.web.dto.AppointmentRequestDto;
+import org.teomant.appointment.appointment.web.dto.AppointmentResponseDto;
 import org.teomant.appointment.appointment.web.mapping.AppointmentDtoMapper;
 
 @RestController

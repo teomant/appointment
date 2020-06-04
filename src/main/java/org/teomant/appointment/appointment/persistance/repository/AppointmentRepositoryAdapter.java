@@ -7,6 +7,8 @@ import org.teomant.appointment.appointment.domain.model.Option;
 import org.teomant.appointment.appointment.domain.repository.AppointmentRepository;
 import org.teomant.appointment.appointment.persistance.mapping.AppointmentMapper;
 import org.teomant.appointment.appointment.persistance.model.AppointmentEntity;
+import org.teomant.appointment.appointment.persistance.model.OptionEntity;
+import org.teomant.appointment.vote.persistance.mapping.VoteMapper;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,23 +20,29 @@ public class AppointmentRepositoryAdapter implements AppointmentRepository {
     private final AppointmentEntityJpaRepository appointmentEntityJpaRepository;
     private final OptionEntityJpaRepository optionEntityJpaRepository;
     private final AppointmentMapper appointmentMapper = new AppointmentMapper();
+    private final VoteMapper voteMapper = new VoteMapper();
 
 
     @Override
     public Appointment save(Appointment appointment) {
-        AppointmentEntity entityToSave = appointmentMapper.toEntity(appointment);
 
         Set<Long> receivedOptions = appointment.getOptions().stream()
                 .filter(option -> option.getId() != null)
-                .map(Option::getId)
-                .peek(id -> {
-                    if (!optionEntityJpaRepository.findById(id)
-                            .orElseThrow(IllegalArgumentException::new)
-                            .getAppointment().getId().equals(appointment.getId())) {
+                .peek(option -> {
+                    OptionEntity optionEntity = optionEntityJpaRepository.findById(option.getId())
+                            .orElseThrow(IllegalArgumentException::new);
+
+                    AppointmentEntity storedOptionAppointment = optionEntity.getAppointment();
+
+                    if (storedOptionAppointment == null || !storedOptionAppointment.getId().equals(appointment.getId())) {
                         throw new IllegalArgumentException();
                     }
+                    option.setVotes(optionEntity.getVotes().stream().map(voteMapper::toModel).collect(Collectors.toSet()));
                 })
+                .map(Option::getId)
                 .collect(Collectors.toSet());
+
+        AppointmentEntity entityToSave = appointmentMapper.toEntity(appointment);
 
         if (entityToSave.getId() != null) {
             findById(entityToSave.getId()).getOptions().forEach(optionEntity -> {
@@ -45,9 +53,7 @@ public class AppointmentRepositoryAdapter implements AppointmentRepository {
             });
         }
 
-        return appointmentMapper.toModel(
-                appointmentEntityJpaRepository.save(entityToSave)
-        );
+        return appointmentMapper.toModel(appointmentEntityJpaRepository.save(entityToSave));
     }
 
     @Override
