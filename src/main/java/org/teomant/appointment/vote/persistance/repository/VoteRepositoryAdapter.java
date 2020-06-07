@@ -21,10 +21,10 @@ public class VoteRepositoryAdapter implements VoteRepository {
     @Override
     public Vote save(Vote vote) {
         VoteEntity toSave = voteMapper.toEntity(vote);
-        toSave.setOption(optionEntityJpaRepository.findById(vote.getOption().getId()).orElseThrow(IllegalArgumentException::new));
+        toSave.setOption(optionEntityJpaRepository.findById(vote.getOptionId()).orElseThrow(IllegalArgumentException::new));
         VoteEntity saved = voteEntityJpaRepository.save(toSave);
         Vote response = voteMapper.toModel(saved);
-        response.setOption(optionMapper.toModel(saved.getOption()));
+        response.setOptionId(saved.getOption().getId());
         return response;
     }
 }

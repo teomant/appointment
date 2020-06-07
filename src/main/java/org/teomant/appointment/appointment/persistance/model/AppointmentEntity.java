@@ -5,8 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -38,5 +38,5 @@ public class AppointmentEntity {
     private boolean deleted;
 
     @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL)
-    private Set<OptionEntity> options = new HashSet<>();
+    private List<OptionEntity> options = new ArrayList<>();
 }

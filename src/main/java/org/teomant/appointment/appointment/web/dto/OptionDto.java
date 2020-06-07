@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.teomant.appointment.vote.web.dto.VoteDto;
 
 import java.time.OffsetDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,5 +13,5 @@ public class OptionDto {
     private Long id;
     private String comment;
     private OffsetDateTime dateTime;
-    private Set<VoteDto> votes;
+    private List<VoteDto> votes;
 }

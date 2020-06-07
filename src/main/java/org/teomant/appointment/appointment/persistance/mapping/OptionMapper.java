@@ -17,7 +17,7 @@ public class OptionMapper {
         model.setDateTime(entity.getDateTime());
         model.setVotes(entity.getVotes().stream()
                 .map(voteMapper::toModel)
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toList()));
 
         return model;
     }
@@ -30,7 +30,7 @@ public class OptionMapper {
         entity.setVotes(model.getVotes().stream()
                 .map(voteMapper::toEntity)
                 .peek(voteEntity -> voteEntity.setOption(entity))
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toList()));
 
         return entity;
     }

@@ -19,7 +19,7 @@ public class AppointmentMapper {
         model.setTill(entity.getTill());
         model.setOptions(entity.getOptions().stream()
                 .map(optionMapper::toModel)
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toList()));
 
         return model;
     }
@@ -35,7 +35,7 @@ public class AppointmentMapper {
         entity.setOptions(model.getOptions().stream()
                 .map(optionMapper::toEntity)
                 .peek(optionEntity -> optionEntity.setAppointment(entity))
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toList()));
 
         return entity;
     }

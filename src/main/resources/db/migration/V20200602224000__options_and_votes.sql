@@ -1,13 +1,13 @@
-ALTER TABLE public.option ADD PRIMARY KEY (id);
+alter table public.appointment add PRIMARY KEY (id);
 
-CREATE TABLE public.options (
+create TABLE public.options (
     id SERIAL PRIMARY KEY,
     comment VARCHAR NOT NULL,
     datetime TIMESTAMP WITH TIME ZONE,
-    appointment_id int REFERENCES public.option
+    appointment_id int REFERENCES public.appointment
 );
 
-CREATE TABLE public.user (
+create TABLE public.user (
     id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
     option_id int REFERENCES public.options

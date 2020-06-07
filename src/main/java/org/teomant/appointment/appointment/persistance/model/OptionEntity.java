@@ -6,8 +6,8 @@ import org.teomant.appointment.vote.persistance.model.VoteEntity;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,5 +31,5 @@ public class OptionEntity {
     private AppointmentEntity appointment;
 
     @OneToMany(mappedBy = "option", cascade = CascadeType.ALL)
-    private Set<VoteEntity> votes = new HashSet<>();
+    private List<VoteEntity> votes = new ArrayList<>();
 }

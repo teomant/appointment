@@ -17,7 +17,7 @@ public class AppointmentDtoMapper {
         model.setLatitude(dto.getLatitude());
         model.setLongitude(dto.getLongitude());
         model.setTill(dto.getTill());
-        model.setOptions(dto.getOptions().stream().map(optionDtoMapper::fromDtoToModel).collect(Collectors.toSet()));
+        model.setOptions(dto.getOptions().stream().map(optionDtoMapper::fromDtoToModel).collect(Collectors.toList()));
 
         return model;
     }
@@ -29,7 +29,7 @@ public class AppointmentDtoMapper {
         dto.setLatitude(model.getLatitude());
         dto.setLongitude(model.getLongitude());
         dto.setTill(model.getTill());
-        dto.setOptions(model.getOptions().stream().map(optionDtoMapper::fromModelToDto).collect(Collectors.toSet()));
+        dto.setOptions(model.getOptions().stream().map(optionDtoMapper::fromModelToDto).collect(Collectors.toList()));
 
         return dto;
     }

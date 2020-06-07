@@ -1,4 +1,4 @@
-CREATE TABLE public.option (
+CREATE TABLE public.appointment (
     id SERIAL,
     comment VARCHAR NOT NULL,
     latitude REAL,

@@ -37,7 +37,7 @@ public class AppointmentRepositoryAdapter implements AppointmentRepository {
                     if (storedOptionAppointment == null || !storedOptionAppointment.getId().equals(appointment.getId())) {
                         throw new IllegalArgumentException();
                     }
-                    option.setVotes(optionEntity.getVotes().stream().map(voteMapper::toModel).collect(Collectors.toSet()));
+                    option.setVotes(optionEntity.getVotes().stream().map(voteMapper::toModel).collect(Collectors.toList()));
                 })
                 .map(Option::getId)
                 .collect(Collectors.toSet());

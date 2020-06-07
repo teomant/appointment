@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.OffsetDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,5 +14,5 @@ public class AppointmentResponseDto {
     private double latitude;
     private double longitude;
     private OffsetDateTime till;
-    private Set<OptionDto> options;
+    private List<OptionDto> options;
 }

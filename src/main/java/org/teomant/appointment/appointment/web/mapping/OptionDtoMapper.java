@@ -16,7 +16,7 @@ public class OptionDtoMapper {
         model.setId(dto.getId());
         model.setComment(dto.getComment());
         model.setDateTime(dto.getDateTime());
-        model.setVotes(Collections.EMPTY_SET);
+        model.setVotes(Collections.EMPTY_LIST);
         return model;
     }
 
@@ -25,7 +25,7 @@ public class OptionDtoMapper {
         dto.setId(model.getId());
         dto.setComment(model.getComment());
         dto.setDateTime(model.getDateTime());
-        dto.setVotes(model.getVotes().stream().map(voteDtoMapper::fromModelToDto).collect(Collectors.toSet()));
+        dto.setVotes(model.getVotes().stream().map(voteDtoMapper::fromModelToDto).collect(Collectors.toList()));
 
         return dto;
     }

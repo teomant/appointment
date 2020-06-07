@@ -3,7 +3,7 @@ package org.teomant.appointment.appointment.domain.model;
 import lombok.Data;
 
 import java.time.OffsetDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Data
 public class Appointment {
@@ -13,5 +13,5 @@ public class Appointment {
     private double longitude;
     private OffsetDateTime created;
     private OffsetDateTime till;
-    private Set<Option> options;
+    private List<Option> options;
 }

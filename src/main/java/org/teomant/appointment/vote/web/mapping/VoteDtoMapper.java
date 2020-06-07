@@ -14,7 +14,7 @@ public class VoteDtoMapper {
         model.setType(VoteEnum.valueOf(dto.getType()));
         Option option = new Option();
         option.setId(dto.getOptionId());
-        model.setOption(option);
+        model.setOptionId(option.getId());
 
         return model;
     }
