@@ -2,6 +2,7 @@ package org.teomant.appointment.appointment.persistance.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.teomant.appointment.user.persistance.model.UserEntity;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
@@ -36,6 +37,10 @@ public class AppointmentEntity {
 
     @Column
     private boolean deleted;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL)
     private List<OptionEntity> options = new ArrayList<>();

@@ -1,6 +1,7 @@
 package org.teomant.appointment.appointment.domain.model;
 
 import lombok.Data;
+import org.teomant.appointment.user.domain.model.User;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,4 +15,5 @@ public class Appointment {
     private OffsetDateTime created;
     private OffsetDateTime till;
     private List<Option> options;
+    private User user;
 }

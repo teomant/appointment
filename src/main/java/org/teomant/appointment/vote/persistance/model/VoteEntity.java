@@ -3,6 +3,7 @@ package org.teomant.appointment.vote.persistance.model;
 import lombok.Getter;
 import lombok.Setter;
 import org.teomant.appointment.appointment.persistance.model.OptionEntity;
+import org.teomant.appointment.user.persistance.model.UserEntity;
 import org.teomant.appointment.vote.domain.model.VoteEnum;
 
 import javax.persistence.*;
@@ -28,4 +29,8 @@ public class VoteEntity {
     @ManyToOne
     @JoinColumn(name = "option_id")
     private OptionEntity option;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 }

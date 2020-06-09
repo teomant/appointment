@@ -28,6 +28,10 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public Appointment update(Appointment update) {
         Appointment appointment = get(update.getId());
+        if (appointment.getUser() == null || update.getUser() == null
+                || !appointment.getUser().getId().equals(update.getUser().getId())) {
+            throw new IllegalArgumentException();
+        }
         appointment.setComment(update.getComment());
         appointment.setTill(update.getTill());
         appointment.setLongitude(update.getLongitude());

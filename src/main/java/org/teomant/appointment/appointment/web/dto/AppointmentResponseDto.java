@@ -15,4 +15,5 @@ public class AppointmentResponseDto {
     private double longitude;
     private OffsetDateTime till;
     private List<OptionDto> options;
+    private String creatorName;
 }
