@@ -16,4 +16,5 @@ public class Appointment {
     private OffsetDateTime till;
     private List<Option> options;
     private User user;
+    private boolean done;
 }

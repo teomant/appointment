@@ -22,6 +22,7 @@ public class AppointmentMapper {
         model.setOptions(entity.getOptions().stream()
                 .map(optionMapper::toModel)
                 .collect(Collectors.toList()));
+        model.setDone(entity.isDone());
 
         if (entity.getUser() != null) {
             model.setUser(userMapper.toModel(entity.getUser()));
@@ -42,6 +43,7 @@ public class AppointmentMapper {
                 .map(optionMapper::toEntity)
                 .peek(optionEntity -> optionEntity.setAppointment(entity))
                 .collect(Collectors.toList()));
+        entity.setDone(model.isDone());
 
         if (model.getUser() != null) {
             entity.setUser(userMapper.toEntity(model.getUser()));

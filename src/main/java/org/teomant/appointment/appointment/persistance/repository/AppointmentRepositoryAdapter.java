@@ -10,6 +10,8 @@ import org.teomant.appointment.appointment.persistance.model.AppointmentEntity;
 import org.teomant.appointment.appointment.persistance.model.OptionEntity;
 import org.teomant.appointment.vote.persistance.mapping.VoteMapper;
 
+import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -59,6 +61,14 @@ public class AppointmentRepositoryAdapter implements AppointmentRepository {
     @Override
     public Appointment get(Long id) {
         return appointmentMapper.toModel(findById(id));
+    }
+
+    //TODO do something with this abomination
+    @Override
+    public List<Appointment> getUndoneAppointmentsTill(OffsetDateTime till) {
+        return appointmentEntityJpaRepository.findByTillBeforeAndDoneFalse(till).stream()
+                .map(appointmentMapper::toModel)
+                .collect(Collectors.toList());
     }
 
     private AppointmentEntity findById(Long id) {

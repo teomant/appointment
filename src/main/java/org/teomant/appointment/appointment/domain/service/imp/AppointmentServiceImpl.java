@@ -16,8 +16,18 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Appointment create(Appointment appointment) {
+        validateCreate(appointment);
+
         appointment.setCreated(OffsetDateTime.now());
+        appointment.setDone(false);
+
         return appointmentRepository.save(appointment);
+    }
+
+    private void validateCreate(Appointment appointment) {
+        if (appointment.getTill().isBefore(OffsetDateTime.now())) {
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override
@@ -28,10 +38,12 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public Appointment update(Appointment update) {
         Appointment appointment = get(update.getId());
+
         if (appointment.getUser() == null || update.getUser() == null
                 || !appointment.getUser().getId().equals(update.getUser().getId())) {
             throw new IllegalArgumentException();
         }
+
         appointment.setComment(update.getComment());
         appointment.setTill(update.getTill());
         appointment.setLongitude(update.getLongitude());

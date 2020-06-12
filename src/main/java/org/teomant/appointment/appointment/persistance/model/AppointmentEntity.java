@@ -38,6 +38,9 @@ public class AppointmentEntity {
     @Column
     private boolean deleted;
 
+    @Column
+    private boolean done;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
