@@ -22,9 +22,11 @@ public class NotificationRestController {
     private final NotificationDtoMapper notificationDtoMapper = new NotificationDtoMapper();
     private final UserMapper userMapper = new UserMapper();
 
-    @GetMapping("/{userId}")
-    public List<NotificationDto> getNotifications(@PathVariable Long userId, @RequestParam boolean delivered) {
-        return notificationService.findByUser(userId, delivered).stream().map(notificationDtoMapper::fromModelToDto).collect(Collectors.toList());
+    @GetMapping("/get")
+    public List<NotificationDto> getNotifications(@RequestParam(required = false) Boolean delivered) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return notificationService.findByUser(userMapper.toModel((UserEntity) principal), delivered).stream().map(notificationDtoMapper::fromModelToDto).collect(Collectors.toList());
     }
 
     @PostMapping("/delivered/{notificationId}")

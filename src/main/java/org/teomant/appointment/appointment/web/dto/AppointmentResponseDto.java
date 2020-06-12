@@ -16,4 +16,5 @@ public class AppointmentResponseDto {
     private OffsetDateTime till;
     private List<OptionDto> options;
     private String creatorName;
+    private boolean done;
 }

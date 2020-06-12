@@ -9,4 +9,5 @@ public class NotificationDto {
     private Long id;
     private Long appointmentId;
     private String comment;
+    private boolean delivered;
 }

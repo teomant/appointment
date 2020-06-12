@@ -10,7 +10,7 @@ public class NotificationDtoMapper {
         dto.setId(model.getId());
         dto.setComment(model.getComment());
         dto.setAppointmentId(model.getAppointment().getId());
-
+        dto.setDelivered(model.isDelivered());
         return dto;
     }
 }

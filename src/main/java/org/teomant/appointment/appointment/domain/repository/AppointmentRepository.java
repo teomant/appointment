@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface AppointmentRepository {
 
-    public Appointment save(Appointment appointment);
+    Appointment save(Appointment appointment);
 
-    public Appointment get(Long id);
+    Appointment get(Long id);
 
-    public List<Appointment> getUndoneAppointmentsTill(OffsetDateTime till);
+    List<Appointment> getUndoneAppointmentsTill(OffsetDateTime till);
 }

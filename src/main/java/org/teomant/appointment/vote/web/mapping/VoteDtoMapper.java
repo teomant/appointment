@@ -29,6 +29,16 @@ public class VoteDtoMapper {
         return model;
     }
 
+    public Vote fromDeleteToModel(Long id) {
+        Vote model = new Vote();
+        model.setId(id);
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.setUser(userMapper.toModel((UserEntity) principal));
+
+        return model;
+    }
+
     public VoteDto fromModelToDto(Vote model) {
         VoteDto dto = new VoteDto();
         dto.setId(model.getId());

@@ -2,11 +2,13 @@ package org.teomant.appointment.notification.domain.service.imp;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.teomant.appointment.appointment.domain.model.Appointment;
 import org.teomant.appointment.notification.domain.model.Notification;
 import org.teomant.appointment.notification.domain.repository.NotificationRepository;
 import org.teomant.appointment.notification.domain.service.NotificationService;
 import org.teomant.appointment.user.domain.model.User;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -16,8 +18,31 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;
 
     @Override
-    public void create(List<Notification> notifications) {
-        notificationRepository.saveAll(notifications);
+    public void createFromAppointment(Appointment appointment) {
+        if (appointment.getUser() == null) {
+            return;
+        }
+
+        Notification notification = new Notification();
+        notification.setComment("creator notification");
+        notification.setAppointment(appointment);
+        notification.setUser(appointment.getUser());
+        notification.setDelivered(false);
+
+        notificationRepository.save(notification);
+    }
+
+    @Override
+    public void createFromVoters(Collection<User> users, Appointment appointment) {
+        users.forEach(user -> {
+            Notification notification = new Notification();
+            notification.setComment("voter notification");
+            notification.setAppointment(appointment);
+            notification.setUser(user);
+            notification.setDelivered(false);
+
+            notificationRepository.save(notification);
+        });
     }
 
     @Override
@@ -33,7 +58,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<Notification> findByUser(Long userId, boolean includeDelivered) {
-        return notificationRepository.findByUser(userId, includeDelivered);
+    public List<Notification> findByUser(User user, Boolean includeDelivered) {
+        return notificationRepository.findByUser(user, includeDelivered);
     }
 }

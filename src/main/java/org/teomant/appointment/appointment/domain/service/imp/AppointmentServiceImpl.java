@@ -7,6 +7,7 @@ import org.teomant.appointment.appointment.domain.repository.AppointmentReposito
 import org.teomant.appointment.appointment.domain.service.AppointmentService;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +41,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment appointment = get(update.getId());
 
         if (appointment.getUser() == null || update.getUser() == null
-                || !appointment.getUser().getId().equals(update.getUser().getId())) {
+                || !appointment.getUser().getId().equals(update.getUser().getId())
+                || appointment.isDone()) {
             throw new IllegalArgumentException();
         }
 
@@ -51,5 +53,18 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setOptions(update.getOptions());
 
         return appointmentRepository.save(appointment);
+    }
+
+    @Override
+    public List<Appointment> getUndoneAppointmentsTill(OffsetDateTime till) {
+        return appointmentRepository.getUndoneAppointmentsTill(till);
+    }
+
+    @Override
+    public void markDone(Appointment appointment) {
+        Appointment stored = get(appointment.getId());
+        stored.setDone(true);
+
+        appointmentRepository.save(stored);
     }
 }

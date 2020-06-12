@@ -16,4 +16,9 @@ public class VoteServiceImpl implements VoteService {
     public Vote create(Vote vote) {
         return voteRepository.save(vote);
     }
+
+    @Override
+    public void delete(Vote vote) {
+        voteRepository.delete(vote);
+    }
 }

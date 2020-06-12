@@ -1,10 +1,7 @@
 package org.teomant.appointment.vote.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.teomant.appointment.vote.domain.service.VoteService;
 import org.teomant.appointment.vote.web.dto.VoteDto;
 import org.teomant.appointment.vote.web.dto.VoteRequestDto;
@@ -21,6 +18,12 @@ public class VoteRestController {
     @PostMapping("/vote")
     public VoteDto createVote(@RequestBody VoteRequestDto dto) {
         return voteDtoMapper.fromModelToDto(voteService.create(voteDtoMapper.fromCreateToModel(dto)));
+    }
+
+    @PostMapping("/deleteVote/{id}")
+    public void deleteVote(@PathVariable Long id) {
+
+        voteService.delete(voteDtoMapper.fromDeleteToModel(id));
     }
 
 }

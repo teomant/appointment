@@ -39,8 +39,8 @@ public class AppointmentDtoMapper {
         dto.setLongitude(model.getLongitude());
         dto.setTill(model.getTill());
         dto.setOptions(model.getOptions().stream().map(optionDtoMapper::fromModelToDto).collect(Collectors.toList()));
-
         dto.setCreatorName(model.getUser() != null ? model.getUser().getUsername() : "");
+        dto.setDone(model.isDone());
 
         return dto;
     }

@@ -4,5 +4,7 @@ import org.teomant.appointment.vote.domain.model.Vote;
 
 public interface VoteRepository {
 
-    public Vote save(Vote vote);
+    Vote save(Vote vote);
+
+    void delete(Vote vote);
 }

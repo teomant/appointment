@@ -2,12 +2,18 @@ package org.teomant.appointment.appointment.domain.service;
 
 import org.teomant.appointment.appointment.domain.model.Appointment;
 
+import java.time.OffsetDateTime;
+import java.util.List;
+
 public interface AppointmentService {
 
-    public Appointment create(Appointment appointment);
+    Appointment create(Appointment appointment);
 
-    public Appointment get(Long id);
+    Appointment get(Long id);
 
-    public Appointment update(Appointment appointment);
+    Appointment update(Appointment appointment);
 
+    List<Appointment> getUndoneAppointmentsTill(OffsetDateTime till);
+
+    void markDone(Appointment appointment);
 }

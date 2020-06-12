@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface NotificationEntityJpaRepository extends JpaRepository<NotificationEntity, Long> {
     List<NotificationEntity> findByUserAndDelivered(UserEntity userEntity, boolean delivered);
+
+    List<NotificationEntity> findByUser(UserEntity userEntity);
 }

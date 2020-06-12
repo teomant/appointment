@@ -4,6 +4,8 @@ import org.teomant.appointment.vote.domain.model.Vote;
 
 public interface VoteService {
 
-    public Vote create(Vote vote);
+    Vote create(Vote vote);
+
+    void delete(Vote vote);
 
 }
