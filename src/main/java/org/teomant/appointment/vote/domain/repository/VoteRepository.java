@@ -7,4 +7,6 @@ public interface VoteRepository {
     Vote save(Vote vote);
 
     void delete(Vote vote);
+
+    Vote findById(Long id);
 }

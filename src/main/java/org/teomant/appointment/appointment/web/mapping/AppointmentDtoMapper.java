@@ -1,18 +1,22 @@
 package org.teomant.appointment.appointment.web.mapping;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.teomant.appointment.appointment.domain.model.Appointment;
 import org.teomant.appointment.appointment.web.dto.AppointmentRequestDto;
 import org.teomant.appointment.appointment.web.dto.AppointmentResponseDto;
-import org.teomant.appointment.user.persistance.mapper.UserMapper;
+import org.teomant.appointment.user.domain.repository.UserRepository;
 import org.teomant.appointment.user.persistance.model.UserEntity;
 
 import java.util.stream.Collectors;
 
+@Component
+@RequiredArgsConstructor
 public class AppointmentDtoMapper {
 
-    private final OptionDtoMapper optionDtoMapper = new OptionDtoMapper();
-    private final UserMapper userMapper = new UserMapper();
+    private final OptionDtoMapper optionDtoMapper;
+    private final UserRepository userRepository;
 
     public Appointment fromDtoToModel(AppointmentRequestDto dto, Long id) {
         Appointment model = new Appointment();
@@ -25,7 +29,7 @@ public class AppointmentDtoMapper {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserEntity) {
-            model.setUser(userMapper.toModel((UserEntity) principal));
+            model.setUser(userRepository.findByUsername(((UserEntity) principal).getUsername()));
         }
 
         return model;

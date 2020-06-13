@@ -6,6 +6,9 @@ import org.teomant.appointment.appointment.domain.model.Appointment;
 import org.teomant.appointment.notification.domain.model.Notification;
 import org.teomant.appointment.notification.domain.repository.NotificationRepository;
 import org.teomant.appointment.notification.domain.service.NotificationService;
+import org.teomant.appointment.security.domain.model.ActionNameEnum;
+import org.teomant.appointment.security.domain.model.EntityNameEnum;
+import org.teomant.appointment.security.service.RightChecker;
 import org.teomant.appointment.user.domain.model.User;
 
 import java.util.Collection;
@@ -16,6 +19,7 @@ import java.util.List;
 public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final RightChecker rightChecker;
 
     @Override
     public void createFromAppointment(Appointment appointment) {
@@ -46,10 +50,10 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void markDelivered(Long notificationId, User currentUser) {
+    public void markDelivered(Long notificationId) {
         Notification stored = notificationRepository.findById(notificationId);
 
-        if (!stored.getUser().getId().equals(currentUser.getId())) {
+        if (!rightChecker.checkCanPerform(EntityNameEnum.NOTIFICATION, ActionNameEnum.MODIFY, stored.getUser())) {
             throw new IllegalArgumentException();
         }
 

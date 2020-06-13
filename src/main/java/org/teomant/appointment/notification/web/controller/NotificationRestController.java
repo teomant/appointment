@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.teomant.appointment.notification.domain.service.NotificationService;
 import org.teomant.appointment.notification.web.dto.NotificationDto;
 import org.teomant.appointment.notification.web.mapping.NotificationDtoMapper;
-import org.teomant.appointment.user.persistance.mapper.UserMapper;
+import org.teomant.appointment.user.domain.repository.UserRepository;
 import org.teomant.appointment.user.persistance.model.UserEntity;
 
 import java.util.List;
@@ -20,20 +20,17 @@ public class NotificationRestController {
 
     private final NotificationService notificationService;
     private final NotificationDtoMapper notificationDtoMapper = new NotificationDtoMapper();
-    private final UserMapper userMapper = new UserMapper();
+    private final UserRepository userRepository;
 
     @GetMapping("/get")
     public List<NotificationDto> getNotifications(@RequestParam(required = false) Boolean delivered) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        return notificationService.findByUser(userMapper.toModel((UserEntity) principal), delivered).stream().map(notificationDtoMapper::fromModelToDto).collect(Collectors.toList());
+        return notificationService.findByUser(userRepository.findByUsername(((UserEntity) principal).getUsername()), delivered).stream().map(notificationDtoMapper::fromModelToDto).collect(Collectors.toList());
     }
 
     @PostMapping("/delivered/{notificationId}")
     public ResponseEntity markDelivered(@PathVariable Long notificationId) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        notificationService.markDelivered(notificationId, userMapper.toModel((UserEntity) principal));
+        notificationService.markDelivered(notificationId);
         return ResponseEntity.ok().build();
     }
 

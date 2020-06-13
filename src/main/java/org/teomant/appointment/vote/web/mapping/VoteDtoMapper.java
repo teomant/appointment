@@ -1,7 +1,10 @@
 package org.teomant.appointment.vote.web.mapping;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.teomant.appointment.appointment.domain.model.Option;
+import org.teomant.appointment.user.domain.repository.UserRepository;
 import org.teomant.appointment.user.persistance.mapper.UserMapper;
 import org.teomant.appointment.user.persistance.model.UserEntity;
 import org.teomant.appointment.vote.domain.model.Vote;
@@ -9,9 +12,12 @@ import org.teomant.appointment.vote.domain.model.VoteEnum;
 import org.teomant.appointment.vote.web.dto.VoteDto;
 import org.teomant.appointment.vote.web.dto.VoteRequestDto;
 
+@Component
+@RequiredArgsConstructor
 public class VoteDtoMapper {
 
     private final UserMapper userMapper = new UserMapper();
+    private final UserRepository userRepository;
 
     public Vote fromCreateToModel(VoteRequestDto dto) {
         Vote model = new Vote();
@@ -23,7 +29,7 @@ public class VoteDtoMapper {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserEntity) {
-            model.setUser(userMapper.toModel((UserEntity) principal));
+            model.setUser(userRepository.findByUsername(((UserEntity) principal).getUsername()));
         }
 
         return model;
@@ -32,9 +38,6 @@ public class VoteDtoMapper {
     public Vote fromDeleteToModel(Long id) {
         Vote model = new Vote();
         model.setId(id);
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        model.setUser(userMapper.toModel((UserEntity) principal));
 
         return model;
     }

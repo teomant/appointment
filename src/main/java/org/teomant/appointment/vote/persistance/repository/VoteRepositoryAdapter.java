@@ -53,12 +53,11 @@ public class VoteRepositoryAdapter implements VoteRepository {
     public void delete(Vote vote) {
         VoteEntity voteEntity = voteEntityJpaRepository.findById(vote.getId()).orElseThrow(IllegalArgumentException::new);
 
-        if (voteEntity.getUser() == null
-                || !vote.getUser().getId().equals(voteEntity.getUser().getId())
-                || voteEntity.getOption().getAppointment().isDone()) {
-            throw new IllegalArgumentException();
-        }
-
         voteEntityJpaRepository.delete(voteEntity);
+    }
+
+    @Override
+    public Vote findById(Long id) {
+        return voteMapper.toModel(voteEntityJpaRepository.findById(id).orElseThrow(IllegalArgumentException::new));
     }
 }

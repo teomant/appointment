@@ -69,7 +69,6 @@ public class AppointmentRepositoryAdapter implements AppointmentRepository {
     }
 
     //Hibernate sucks
-    //TODO add test for this method
     @Override
     public List<Appointment> getUndoneAppointmentsTill(OffsetDateTime till) {
         return appointmentEntityJpaRepository.findByTillBeforeAndDoneFalse(till).stream()
@@ -111,7 +110,7 @@ public class AppointmentRepositoryAdapter implements AppointmentRepository {
                 .collect(Collectors.toList());
     }
 
-    private AppointmentEntity findById(Long id) {
+    public AppointmentEntity findById(Long id) {
         return appointmentEntityJpaRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 }

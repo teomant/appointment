@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import org.teomant.appointment.appointment.domain.model.Appointment;
 import org.teomant.appointment.appointment.domain.repository.AppointmentRepository;
 import org.teomant.appointment.appointment.domain.service.AppointmentService;
+import org.teomant.appointment.security.domain.model.ActionNameEnum;
+import org.teomant.appointment.security.domain.model.EntityNameEnum;
+import org.teomant.appointment.security.service.RightChecker;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,6 +17,7 @@ import java.util.List;
 public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
+    private final RightChecker rightChecker;
 
     @Override
     public Appointment create(Appointment appointment) {
@@ -40,8 +44,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     public Appointment update(Appointment update) {
         Appointment appointment = get(update.getId());
 
-        if (appointment.getUser() == null || update.getUser() == null
-                || !appointment.getUser().getId().equals(update.getUser().getId())
+        if (!rightChecker.checkCanPerform(EntityNameEnum.APPOINTMENT, ActionNameEnum.MODIFY, appointment.getUser())
                 || appointment.isDone()) {
             throw new IllegalArgumentException();
         }

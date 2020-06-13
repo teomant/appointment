@@ -13,7 +13,7 @@ public interface NotificationService {
 
     void createFromVoters(Collection<User> users, Appointment appointment);
 
-    void markDelivered(Long notificationId, User currentUser);
+    void markDelivered(Long notificationId);
 
     List<Notification> findByUser(User user, Boolean includeDelivered);
 

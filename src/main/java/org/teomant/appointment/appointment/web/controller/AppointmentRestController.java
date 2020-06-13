@@ -1,7 +1,6 @@
 package org.teomant.appointment.appointment.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.teomant.appointment.appointment.domain.service.AppointmentService;
 import org.teomant.appointment.appointment.web.dto.AppointmentRequestDto;
@@ -14,7 +13,7 @@ import org.teomant.appointment.appointment.web.mapping.AppointmentDtoMapper;
 public class AppointmentRestController {
 
     private final AppointmentService appointmentService;
-    private final AppointmentDtoMapper appointmentDtoMapper = new AppointmentDtoMapper();
+    private final AppointmentDtoMapper appointmentDtoMapper;
 
     @PostMapping("/create")
     public AppointmentResponseDto createAppointment(@RequestBody AppointmentRequestDto create) {
@@ -23,8 +22,6 @@ public class AppointmentRestController {
 
     @GetMapping("/{id}")
     public AppointmentResponseDto getAppointment(@PathVariable Long id) {
-        Object details = SecurityContextHolder.getContext().getAuthentication().getDetails();
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return appointmentDtoMapper.fromModelToDto(appointmentService.get(id));
     }
 

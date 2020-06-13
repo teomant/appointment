@@ -1,5 +1,7 @@
 package org.teomant.appointment.appointment.web.mapping;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.teomant.appointment.appointment.domain.model.Option;
 import org.teomant.appointment.appointment.web.dto.OptionDto;
 import org.teomant.appointment.vote.web.mapping.VoteDtoMapper;
@@ -7,9 +9,11 @@ import org.teomant.appointment.vote.web.mapping.VoteDtoMapper;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
+@Component
+@RequiredArgsConstructor
 public class OptionDtoMapper {
 
-    private final VoteDtoMapper voteDtoMapper = new VoteDtoMapper();
+    private final VoteDtoMapper voteDtoMapper;
 
     public Option fromDtoToModel(OptionDto dto) {
         Option model = new Option();

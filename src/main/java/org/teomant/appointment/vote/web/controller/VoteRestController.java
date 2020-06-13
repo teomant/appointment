@@ -13,7 +13,7 @@ import org.teomant.appointment.vote.web.mapping.VoteDtoMapper;
 public class VoteRestController {
 
     private final VoteService voteService;
-    private final VoteDtoMapper voteDtoMapper = new VoteDtoMapper();
+    private final VoteDtoMapper voteDtoMapper;
 
     @PostMapping("/vote")
     public VoteDto createVote(@RequestBody VoteRequestDto dto) {
