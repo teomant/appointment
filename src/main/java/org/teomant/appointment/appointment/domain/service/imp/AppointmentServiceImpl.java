@@ -8,6 +8,7 @@ import org.teomant.appointment.appointment.domain.service.AppointmentService;
 import org.teomant.appointment.security.domain.model.ActionNameEnum;
 import org.teomant.appointment.security.domain.model.EntityNameEnum;
 import org.teomant.appointment.security.service.RightChecker;
+import org.teomant.appointment.user.domain.model.User;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -41,10 +42,10 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Appointment update(Appointment update) {
+    public Appointment update(Appointment update, User currentUser) {
         Appointment appointment = get(update.getId());
 
-        if (!rightChecker.checkCanPerform(EntityNameEnum.APPOINTMENT, ActionNameEnum.MODIFY, appointment.getUser())
+        if (!rightChecker.checkCanPerform(EntityNameEnum.APPOINTMENT, ActionNameEnum.MODIFY, appointment.getUser(), currentUser)
                 || appointment.isDone()) {
             throw new IllegalArgumentException();
         }

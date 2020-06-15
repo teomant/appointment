@@ -1,7 +1,9 @@
 package org.teomant.appointment.vote.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.teomant.appointment.user.domain.model.User;
 import org.teomant.appointment.vote.domain.service.VoteService;
 import org.teomant.appointment.vote.web.dto.VoteDto;
 import org.teomant.appointment.vote.web.dto.VoteRequestDto;
@@ -23,7 +25,13 @@ public class VoteRestController {
     @PostMapping("/deleteVote/{id}")
     public void deleteVote(@PathVariable Long id) {
 
-        voteService.delete(voteDtoMapper.fromDeleteToModel(id));
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = null;
+        if (principal instanceof User) {
+            currentUser = (User) principal;
+        }
+
+        voteService.delete(voteDtoMapper.fromDeleteToModel(id), currentUser);
     }
 
 }

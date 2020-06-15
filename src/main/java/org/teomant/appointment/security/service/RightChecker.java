@@ -2,7 +2,6 @@ package org.teomant.appointment.security.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.teomant.appointment.security.domain.model.ActionNameEnum;
 import org.teomant.appointment.security.domain.model.EntityNameEnum;
@@ -13,15 +12,9 @@ import org.teomant.appointment.user.domain.model.User;
 @Slf4j
 public class RightChecker {
 
-    public boolean checkCanPerform(EntityNameEnum entity, ActionNameEnum action, User owner) {
+    public boolean checkCanPerform(EntityNameEnum entity, ActionNameEnum action, User owner, User currentUser) {
 
         boolean result = true;
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User currentUser = null;
-        if (principal instanceof User) {
-            currentUser = (User) principal;
-        }
 
         if (currentUser == null
                 || (owner != null && owner.equals(currentUser) && !canOwn(currentUser, entity, action) && !canAny(currentUser, entity, action)

@@ -1,11 +1,13 @@
 package org.teomant.appointment.appointment.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.teomant.appointment.appointment.domain.service.AppointmentService;
 import org.teomant.appointment.appointment.web.dto.AppointmentRequestDto;
 import org.teomant.appointment.appointment.web.dto.AppointmentResponseDto;
 import org.teomant.appointment.appointment.web.mapping.AppointmentDtoMapper;
+import org.teomant.appointment.user.domain.model.User;
 
 @RestController
 @RequestMapping("/rest/appointment")
@@ -27,6 +29,13 @@ public class AppointmentRestController {
 
     @PostMapping("/{id}")
     public AppointmentResponseDto updateAppointment(@PathVariable Long id, @RequestBody AppointmentRequestDto update) {
-        return appointmentDtoMapper.fromModelToDto(appointmentService.update(appointmentDtoMapper.fromDtoToModel(update, id)));
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = null;
+        if (principal instanceof User) {
+            currentUser = (User) principal;
+        }
+
+        return appointmentDtoMapper.fromModelToDto(appointmentService.update(appointmentDtoMapper.fromDtoToModel(update, id), currentUser));
     }
 }

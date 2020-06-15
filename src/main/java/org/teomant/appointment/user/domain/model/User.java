@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.teomant.appointment.security.domain.model.Role;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Data
 @EqualsAndHashCode(of = "id")
@@ -21,7 +21,10 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("USER"));
+        return roles.stream()
+                .map(Role::getName)
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
     @Override

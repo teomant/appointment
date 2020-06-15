@@ -30,7 +30,14 @@ public class NotificationRestController {
 
     @PostMapping("/delivered/{notificationId}")
     public ResponseEntity markDelivered(@PathVariable Long notificationId) {
-        notificationService.markDelivered(notificationId);
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = null;
+        if (principal instanceof User) {
+            currentUser = (User) principal;
+        }
+
+        notificationService.markDelivered(notificationId, currentUser);
         return ResponseEntity.ok().build();
     }
 

@@ -50,10 +50,10 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void markDelivered(Long notificationId) {
+    public void markDelivered(Long notificationId, User currentUser) {
         Notification stored = notificationRepository.findById(notificationId);
 
-        if (!rightChecker.checkCanPerform(EntityNameEnum.NOTIFICATION, ActionNameEnum.MODIFY, stored.getUser())) {
+        if (!rightChecker.checkCanPerform(EntityNameEnum.NOTIFICATION, ActionNameEnum.MODIFY, stored.getUser(), currentUser)) {
             throw new IllegalArgumentException();
         }
 
