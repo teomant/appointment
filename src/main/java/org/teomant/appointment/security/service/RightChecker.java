@@ -7,15 +7,11 @@ import org.springframework.stereotype.Service;
 import org.teomant.appointment.security.domain.model.ActionNameEnum;
 import org.teomant.appointment.security.domain.model.EntityNameEnum;
 import org.teomant.appointment.user.domain.model.User;
-import org.teomant.appointment.user.domain.repository.UserRepository;
-import org.teomant.appointment.user.persistance.model.UserEntity;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class RightChecker {
-
-    private final UserRepository userRepository;
 
     public boolean checkCanPerform(EntityNameEnum entity, ActionNameEnum action, User owner) {
 
@@ -23,8 +19,8 @@ public class RightChecker {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentUser = null;
-        if (principal instanceof UserEntity) {
-            currentUser = userRepository.findByUsername(((UserEntity) principal).getUsername());
+        if (principal instanceof User) {
+            currentUser = (User) principal;
         }
 
         if (currentUser == null

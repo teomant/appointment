@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.teomant.appointment.appointment.domain.model.Option;
+import org.teomant.appointment.user.domain.model.User;
 import org.teomant.appointment.user.domain.repository.UserRepository;
 import org.teomant.appointment.user.persistance.mapper.UserMapper;
-import org.teomant.appointment.user.persistance.model.UserEntity;
 import org.teomant.appointment.vote.domain.model.Vote;
 import org.teomant.appointment.vote.domain.model.VoteEnum;
 import org.teomant.appointment.vote.web.dto.VoteDto;
@@ -28,8 +28,8 @@ public class VoteDtoMapper {
         model.setOptionId(option.getId());
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserEntity) {
-            model.setUser(userRepository.findByUsername(((UserEntity) principal).getUsername()));
+        if (principal instanceof User) {
+            model.setUser((User) principal);
         }
 
         return model;

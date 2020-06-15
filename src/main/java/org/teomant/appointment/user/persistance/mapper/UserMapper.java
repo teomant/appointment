@@ -17,6 +17,7 @@ public class UserMapper {
         if (entity.getRoles() != null) {
             model.setRoles(entity.getRoles().stream().map(roleMapper::toModel).collect(Collectors.toList()));
         }
+        model.setPassword(entity.getPassword());
         return model;
     }
 
@@ -24,6 +25,7 @@ public class UserMapper {
         UserEntity entity = new UserEntity();
         entity.setId(model.getId());
         entity.setUsername(model.getUsername());
+        entity.setPassword(model.getPassword());
 
         return entity;
     }
