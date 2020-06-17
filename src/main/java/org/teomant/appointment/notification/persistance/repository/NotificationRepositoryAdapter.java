@@ -6,7 +6,7 @@ import org.teomant.appointment.notification.domain.model.Notification;
 import org.teomant.appointment.notification.domain.repository.NotificationRepository;
 import org.teomant.appointment.notification.persistance.mapping.NotificationMapper;
 import org.teomant.appointment.user.domain.model.User;
-import org.teomant.appointment.user.persistance.mapper.UserMapper;
+import org.teomant.appointment.user.persistance.mapper.SiteUserMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +17,7 @@ public class NotificationRepositoryAdapter implements NotificationRepository {
 
     private final NotificationEntityJpaRepository notificationEntityJpaRepository;
     private final NotificationMapper notificationMapper = new NotificationMapper();
-    private final UserMapper userMapper = new UserMapper();
+    private final SiteUserMapper siteUserMapper = new SiteUserMapper();
 
     @Override
     public void save(Notification notification) {
@@ -37,11 +37,11 @@ public class NotificationRepositoryAdapter implements NotificationRepository {
     @Override
     public List<Notification> findByUser(User user, Boolean includeDelivered) {
         if (includeDelivered != null) {
-            return notificationEntityJpaRepository.findByUserAndDelivered(userMapper.toEntity(user), includeDelivered).stream()
+            return notificationEntityJpaRepository.findByUserAndDelivered(siteUserMapper.toEntity(user), includeDelivered).stream()
                     .map(notificationMapper::toModel)
                     .collect(Collectors.toList());
         } else {
-            return notificationEntityJpaRepository.findByUser(userMapper.toEntity(user)).stream()
+            return notificationEntityJpaRepository.findByUser(siteUserMapper.toEntity(user)).stream()
                     .map(notificationMapper::toModel)
                     .collect(Collectors.toList());
         }

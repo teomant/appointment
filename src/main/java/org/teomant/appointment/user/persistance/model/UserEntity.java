@@ -13,19 +13,12 @@ import java.util.Collection;
 @Setter
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class UserEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, insertable = false)
     private Long id;
-
-    @Column
-    private String username;
-
-    @Column
-    private String password;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",

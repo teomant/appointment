@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.teomant.appointment.appointment.persistance.model.OptionEntity;
 import org.teomant.appointment.appointment.persistance.repository.OptionEntityJpaRepository;
-import org.teomant.appointment.user.persistance.mapper.UserMapper;
+import org.teomant.appointment.user.persistance.mapper.SiteUserMapper;
 import org.teomant.appointment.vote.domain.model.Vote;
 import org.teomant.appointment.vote.domain.repository.VoteRepository;
 import org.teomant.appointment.vote.persistance.mapping.VoteMapper;
@@ -20,7 +20,7 @@ public class VoteRepositoryAdapter implements VoteRepository {
     private final VoteEntityJpaRepository voteEntityJpaRepository;
     private final OptionEntityJpaRepository optionEntityJpaRepository;
     private final VoteMapper voteMapper = new VoteMapper();
-    private final UserMapper userMapper = new UserMapper();
+    private final SiteUserMapper siteUserMapper = new SiteUserMapper();
 
     @Override
     public Vote save(Vote vote) {
@@ -31,7 +31,7 @@ public class VoteRepositoryAdapter implements VoteRepository {
         }
 
         if (vote.getUser() != null) {
-            List<VoteEntity> byUser = voteEntityJpaRepository.findByUser(userMapper.toEntity(vote.getUser()));
+            List<VoteEntity> byUser = voteEntityJpaRepository.findByUser(siteUserMapper.toEntity(vote.getUser()));
             Optional<VoteEntity> sameVote = byUser.stream()
                     .filter(voteEntity -> voteEntity.getOption().getId().equals(vote.getOptionId())
                             && voteEntity.getType().equals(vote.getType())).findAny();

@@ -2,15 +2,15 @@ package org.teomant.appointment.user.persistance.mapper;
 
 import org.teomant.appointment.security.persistance.mapper.RoleMapper;
 import org.teomant.appointment.user.domain.model.User;
-import org.teomant.appointment.user.persistance.model.UserEntity;
+import org.teomant.appointment.user.persistance.model.SiteUserEntity;
 
 import java.util.stream.Collectors;
 
-public class UserMapper {
+public class SiteUserMapper {
 
     private final RoleMapper roleMapper = new RoleMapper();
 
-    public User toModel(UserEntity entity) {
+    public User toModel(SiteUserEntity entity) {
         User model = new User();
         model.setId(entity.getId());
         model.setUsername(entity.getUsername());
@@ -21,8 +21,8 @@ public class UserMapper {
         return model;
     }
 
-    public UserEntity toEntity(User model) {
-        UserEntity entity = new UserEntity();
+    public SiteUserEntity toEntity(User model) {
+        SiteUserEntity entity = new SiteUserEntity();
         entity.setId(model.getId());
         entity.setUsername(model.getUsername());
         entity.setPassword(model.getPassword());

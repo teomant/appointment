@@ -4,11 +4,11 @@ import org.teomant.appointment.appointment.persistance.mapping.AppointmentMapper
 import org.teomant.appointment.appointment.persistance.model.AppointmentEntity;
 import org.teomant.appointment.notification.domain.model.Notification;
 import org.teomant.appointment.notification.persistance.model.NotificationEntity;
-import org.teomant.appointment.user.persistance.mapper.UserMapper;
-import org.teomant.appointment.user.persistance.model.UserEntity;
+import org.teomant.appointment.user.persistance.mapper.SiteUserMapper;
+import org.teomant.appointment.user.persistance.model.SiteUserEntity;
 
 public class NotificationMapper {
-    private final UserMapper userMapper = new UserMapper();
+    private final SiteUserMapper siteUserMapper = new SiteUserMapper();
     private final AppointmentMapper appointmentMapper = new AppointmentMapper();
 
     public Notification toModel(NotificationEntity entity) {
@@ -16,7 +16,7 @@ public class NotificationMapper {
         model.setId(entity.getId());
         model.setComment(entity.getComment());
         model.setAppointment(appointmentMapper.toModel(entity.getAppointment()));
-        model.setUser(userMapper.toModel(entity.getUser()));
+        model.setUser(siteUserMapper.toModel(entity.getUser()));
         model.setDelivered(entity.isDelivered());
 
         return model;
@@ -28,7 +28,7 @@ public class NotificationMapper {
         entity.setComment(model.getComment());
         entity.setDelivered(model.isDelivered());
 
-        UserEntity userEntity = new UserEntity();
+        SiteUserEntity userEntity = new SiteUserEntity();
         userEntity.setId(model.getUser().getId());
         entity.setUser(userEntity);
 

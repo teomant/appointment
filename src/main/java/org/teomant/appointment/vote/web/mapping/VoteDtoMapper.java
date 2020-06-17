@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.teomant.appointment.appointment.domain.model.Option;
 import org.teomant.appointment.user.domain.model.User;
 import org.teomant.appointment.user.domain.repository.UserRepository;
-import org.teomant.appointment.user.persistance.mapper.UserMapper;
+import org.teomant.appointment.user.persistance.mapper.SiteUserMapper;
 import org.teomant.appointment.vote.domain.model.Vote;
 import org.teomant.appointment.vote.domain.model.VoteEnum;
 import org.teomant.appointment.vote.web.dto.VoteDto;
@@ -16,7 +16,7 @@ import org.teomant.appointment.vote.web.dto.VoteRequestDto;
 @RequiredArgsConstructor
 public class VoteDtoMapper {
 
-    private final UserMapper userMapper = new UserMapper();
+    private final SiteUserMapper siteUserMapper = new SiteUserMapper();
     private final UserRepository userRepository;
 
     public Vote fromCreateToModel(VoteRequestDto dto) {

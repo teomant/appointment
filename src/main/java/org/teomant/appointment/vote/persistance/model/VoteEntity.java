@@ -3,7 +3,7 @@ package org.teomant.appointment.vote.persistance.model;
 import lombok.Getter;
 import lombok.Setter;
 import org.teomant.appointment.appointment.persistance.model.OptionEntity;
-import org.teomant.appointment.user.persistance.model.UserEntity;
+import org.teomant.appointment.user.persistance.model.SiteUserEntity;
 import org.teomant.appointment.vote.domain.model.VoteEnum;
 
 import javax.persistence.*;
@@ -32,5 +32,5 @@ public class VoteEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserEntity user;
+    private SiteUserEntity user;
 }
