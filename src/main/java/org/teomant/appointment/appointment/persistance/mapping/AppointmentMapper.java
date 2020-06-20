@@ -2,14 +2,15 @@ package org.teomant.appointment.appointment.persistance.mapping;
 
 import org.teomant.appointment.appointment.domain.model.Appointment;
 import org.teomant.appointment.appointment.persistance.model.AppointmentEntity;
-import org.teomant.appointment.user.persistance.mapper.SiteUserMapper;
+import org.teomant.appointment.user.domain.model.SiteUser;
+import org.teomant.appointment.user.persistance.mapper.UserMapper;
 
 import java.util.stream.Collectors;
 
 public class AppointmentMapper {
 
     private final OptionMapper optionMapper = new OptionMapper();
-    private final SiteUserMapper siteUserMapper = new SiteUserMapper();
+    private final UserMapper userMapper = new UserMapper();
 
     public Appointment toModel(AppointmentEntity entity) {
         Appointment model = new Appointment();
@@ -25,7 +26,7 @@ public class AppointmentMapper {
         model.setDone(entity.isDone());
 
         if (entity.getUser() != null) {
-            model.setUser(siteUserMapper.toModel(entity.getUser()));
+            model.setUser(userMapper.toModel(entity.getUser()));
         }
 
         return model;
@@ -45,8 +46,8 @@ public class AppointmentMapper {
                 .collect(Collectors.toList()));
         entity.setDone(model.isDone());
 
-        if (model.getUser() != null) {
-            entity.setUser(siteUserMapper.toEntity(model.getUser()));
+        if (model.getUser() != null && model.getUser() instanceof SiteUser) {
+            entity.setUser(userMapper.toEntity((SiteUser) model.getUser()));
         }
 
         return entity;

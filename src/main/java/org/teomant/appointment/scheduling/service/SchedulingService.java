@@ -48,7 +48,9 @@ public class SchedulingService {
 
             Set<User> votedUsers = new HashSet<>();
             appointment.getOptions().forEach(option -> {
-                option.getVotes().forEach(vote -> votedUsers.add(vote.getUser()));
+                option.getVotes().stream()
+                        .filter(vote -> vote.getUser() != null)
+                        .forEach(vote -> votedUsers.add(vote.getUser()));
             });
 
             notificationService.createFromVoters(votedUsers, appointment);

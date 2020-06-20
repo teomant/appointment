@@ -1,8 +1,8 @@
 package org.teomant.appointment.user.domain.repository;
 
-import org.teomant.appointment.user.domain.model.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface UserRepository {
 
-    User findByUsername(String username);
+    UserDetails findByUsername(String username);
 }

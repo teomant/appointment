@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.teomant.appointment.appointment.persistance.model.OptionEntity;
 import org.teomant.appointment.appointment.persistance.repository.OptionEntityJpaRepository;
-import org.teomant.appointment.user.persistance.mapper.SiteUserMapper;
+import org.teomant.appointment.user.persistance.model.UserEntity;
 import org.teomant.appointment.vote.domain.model.Vote;
 import org.teomant.appointment.vote.domain.repository.VoteRepository;
 import org.teomant.appointment.vote.persistance.mapping.VoteMapper;
@@ -20,7 +20,6 @@ public class VoteRepositoryAdapter implements VoteRepository {
     private final VoteEntityJpaRepository voteEntityJpaRepository;
     private final OptionEntityJpaRepository optionEntityJpaRepository;
     private final VoteMapper voteMapper = new VoteMapper();
-    private final SiteUserMapper siteUserMapper = new SiteUserMapper();
 
     @Override
     public Vote save(Vote vote) {
@@ -31,14 +30,16 @@ public class VoteRepositoryAdapter implements VoteRepository {
         }
 
         if (vote.getUser() != null) {
-            List<VoteEntity> byUser = voteEntityJpaRepository.findByUser(siteUserMapper.toEntity(vote.getUser()));
+            UserEntity user = new UserEntity();
+            user.setId(vote.getUser().getId());
+
+            List<VoteEntity> byUser = voteEntityJpaRepository.findByUser(user);
             Optional<VoteEntity> sameVote = byUser.stream()
                     .filter(voteEntity -> voteEntity.getOption().getId().equals(vote.getOptionId())
                             && voteEntity.getType().equals(vote.getType())).findAny();
             if (sameVote.isPresent()) {
                 return voteMapper.toModel(sameVote.get());
             }
-            ;
         }
 
         VoteEntity toSave = voteMapper.toEntity(vote);
@@ -54,6 +55,7 @@ public class VoteRepositoryAdapter implements VoteRepository {
         VoteEntity voteEntity = voteEntityJpaRepository.findById(vote.getId()).orElseThrow(IllegalArgumentException::new);
 
         voteEntityJpaRepository.delete(voteEntity);
+        voteEntityJpaRepository.flush();
     }
 
     @Override

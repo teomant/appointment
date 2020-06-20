@@ -2,6 +2,8 @@ package org.teomant.appointment.appointment.persistance.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.teomant.appointment.vote.persistance.model.VoteEntity;
 
 import javax.persistence.*;
@@ -30,6 +32,7 @@ public class OptionEntity {
     @JoinColumn(name = "appointment_id")
     private AppointmentEntity appointment;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "option", cascade = CascadeType.ALL)
     private List<VoteEntity> votes = new ArrayList<>();
 }

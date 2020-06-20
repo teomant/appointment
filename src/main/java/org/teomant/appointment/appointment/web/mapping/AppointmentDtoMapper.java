@@ -6,8 +6,7 @@ import org.springframework.stereotype.Component;
 import org.teomant.appointment.appointment.domain.model.Appointment;
 import org.teomant.appointment.appointment.web.dto.AppointmentRequestDto;
 import org.teomant.appointment.appointment.web.dto.AppointmentResponseDto;
-import org.teomant.appointment.user.domain.model.User;
-import org.teomant.appointment.user.domain.repository.UserRepository;
+import org.teomant.appointment.user.domain.model.SiteUser;
 
 import java.util.stream.Collectors;
 
@@ -16,7 +15,6 @@ import java.util.stream.Collectors;
 public class AppointmentDtoMapper {
 
     private final OptionDtoMapper optionDtoMapper;
-    private final UserRepository userRepository;
 
     public Appointment fromDtoToModel(AppointmentRequestDto dto, Long id) {
         Appointment model = new Appointment();
@@ -28,8 +26,8 @@ public class AppointmentDtoMapper {
         model.setOptions(dto.getOptions().stream().map(optionDtoMapper::fromDtoToModel).collect(Collectors.toList()));
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof User) {
-            model.setUser((User) principal);
+        if (principal instanceof SiteUser) {
+            model.setUser((SiteUser) principal);
         }
 
         return model;

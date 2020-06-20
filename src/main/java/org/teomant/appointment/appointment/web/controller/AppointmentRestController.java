@@ -7,7 +7,7 @@ import org.teomant.appointment.appointment.domain.service.AppointmentService;
 import org.teomant.appointment.appointment.web.dto.AppointmentRequestDto;
 import org.teomant.appointment.appointment.web.dto.AppointmentResponseDto;
 import org.teomant.appointment.appointment.web.mapping.AppointmentDtoMapper;
-import org.teomant.appointment.user.domain.model.User;
+import org.teomant.appointment.user.domain.model.SiteUser;
 
 @RestController
 @RequestMapping("/rest/appointment")
@@ -31,11 +31,11 @@ public class AppointmentRestController {
     public AppointmentResponseDto updateAppointment(@PathVariable Long id, @RequestBody AppointmentRequestDto update) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User currentUser = null;
-        if (principal instanceof User) {
-            currentUser = (User) principal;
+        SiteUser currentSiteUser = null;
+        if (principal instanceof SiteUser) {
+            currentSiteUser = (SiteUser) principal;
         }
 
-        return appointmentDtoMapper.fromModelToDto(appointmentService.update(appointmentDtoMapper.fromDtoToModel(update, id), currentUser));
+        return appointmentDtoMapper.fromModelToDto(appointmentService.update(appointmentDtoMapper.fromDtoToModel(update, id), currentSiteUser));
     }
 }

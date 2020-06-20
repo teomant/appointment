@@ -9,8 +9,8 @@ import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.ApiContext;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.teomant.appointment.security.persistance.repository.RoleEntityJpaRepository;
-import org.teomant.appointment.user.persistance.repository.TelegramBotUserEntityJpaRepository;
+import org.teomant.appointment.bot.registry.BotRegistry;
+import org.teomant.appointment.bot.service.BotService;
 
 import javax.annotation.PostConstruct;
 import java.net.Authenticator;
@@ -22,8 +22,9 @@ import java.net.PasswordAuthentication;
 @RequiredArgsConstructor
 public class BotStarter {
 
-    private final TelegramBotUserEntityJpaRepository telegramBotUserEntityJpaRepository;
-    private final RoleEntityJpaRepository roleEntityJpaRepository;
+    private final BotService botService;
+    private final BotRegistry botRegistry;
+
     @Value("${bot.proxy.username}")
     private String proxyUsername;
     @Value("${bot.proxy.password}")
@@ -59,8 +60,9 @@ public class BotStarter {
                 botOptions.setProxyPort(proxyPort);
                 botOptions.setProxyType(DefaultBotOptions.ProxyType.SOCKS5);
 
-                TestBot bot = new TestBot(botName, botToken, botOptions, telegramBotUserEntityJpaRepository, roleEntityJpaRepository);
+                TestBot bot = new TestBot(botName, botToken, botOptions, botService);
                 telegramBotsApi.registerBot(bot);
+                botRegistry.getBots().put("telegram", bot);
             } catch (Exception e) {
                 log.error("Error starting bot", e);
             }

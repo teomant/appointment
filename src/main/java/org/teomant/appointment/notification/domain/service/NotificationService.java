@@ -2,6 +2,7 @@ package org.teomant.appointment.notification.domain.service;
 
 import org.teomant.appointment.appointment.domain.model.Appointment;
 import org.teomant.appointment.notification.domain.model.Notification;
+import org.teomant.appointment.user.domain.model.SiteUser;
 import org.teomant.appointment.user.domain.model.User;
 
 import java.util.Collection;
@@ -13,8 +14,8 @@ public interface NotificationService {
 
     void createFromVoters(Collection<User> users, Appointment appointment);
 
-    void markDelivered(Long notificationId, User currentUser);
+    void markDelivered(Long notificationId, SiteUser currentSiteUser);
 
-    List<Notification> findByUser(User user, Boolean includeDelivered);
+    List<Notification> findByUser(SiteUser siteUser, Boolean includeDelivered);
 
 }

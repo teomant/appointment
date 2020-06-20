@@ -3,7 +3,7 @@ package org.teomant.appointment.notification.persistance.model;
 import lombok.Getter;
 import lombok.Setter;
 import org.teomant.appointment.appointment.persistance.model.AppointmentEntity;
-import org.teomant.appointment.user.persistance.model.SiteUserEntity;
+import org.teomant.appointment.user.persistance.model.UserEntity;
 
 import javax.persistence.*;
 
@@ -30,5 +30,5 @@ public class NotificationEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private SiteUserEntity user;
+    private UserEntity user;
 }

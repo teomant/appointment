@@ -2,6 +2,8 @@ package org.teomant.appointment.appointment.persistance.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.teomant.appointment.user.persistance.model.SiteUserEntity;
 
 import javax.persistence.*;
@@ -45,6 +47,7 @@ public class AppointmentEntity {
     @JoinColumn(name = "user_id")
     private SiteUserEntity user;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL)
     private List<OptionEntity> options = new ArrayList<>();
 }
