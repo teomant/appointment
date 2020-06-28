@@ -31,6 +31,7 @@ public class SchedulingService {
     @Scheduled(fixedRate = 30 * 60 * 1000)
     public void getNextPortionOfAppointments() {
         log.info("filling list");
+        appointments.clear();
         appointments.addAll(appointmentService.getUndoneAppointmentsTill(OffsetDateTime.now().plusMinutes(30)));
     }
 
