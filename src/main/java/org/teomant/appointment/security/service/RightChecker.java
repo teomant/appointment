@@ -19,6 +19,7 @@ public class RightChecker {
         if (currentSiteUser == null
                 || (owner != null && owner.equals(currentSiteUser) && !canOwn(currentSiteUser, entity, action) && !canAny(currentSiteUser, entity, action)
                 || (owner != null && !owner.equals(currentSiteUser) && !canAny(currentSiteUser, entity, action)))
+                || (owner == null && !canAny(currentSiteUser, entity, action))
         ) {
             result = false;
         }

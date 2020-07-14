@@ -35,6 +35,13 @@ public class UserMapper {
     }
 
     public User toModel(UserEntity entity) {
+        if (entity instanceof SiteUserEntity) {
+            return toModel((SiteUserEntity) entity);
+        }
+        if (entity instanceof TelegramBotUserEntity) {
+            return toModel((TelegramBotUserEntity) entity);
+        }
+
         User model = new User();
         model.setId(entity.getId());
         return model;

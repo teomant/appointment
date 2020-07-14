@@ -13,8 +13,6 @@ import org.teomant.appointment.bot.registry.BotRegistry;
 import org.teomant.appointment.bot.service.BotService;
 
 import javax.annotation.PostConstruct;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
 
 @Component
 @Slf4j
@@ -25,47 +23,24 @@ public class BotStarter {
     private final BotService botService;
     private final BotRegistry botRegistry;
 
-    @Value("${bot.proxy.username}")
-    private String proxyUsername;
-    @Value("${bot.proxy.password}")
-    private String proxyPassword;
-    @Value("${bot.proxy.host}")
-    private String proxyHost;
-    @Value("${bot.proxy.port}")
-    private int proxyPort;
     @Value("${bot.name}")
     private String botName;
     @Value("${bot.token}")
     private String botToken;
-    @Value("${bot.start:false}")
-    private Boolean startBot;
 
     @PostConstruct
     public void init() {
-        if (startBot) {
-            ApiContextInitializer.init();
+        ApiContextInitializer.init();
 
-            TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
-            try {
-                DefaultBotOptions botOptions = ApiContext.getInstance(DefaultBotOptions.class);
+        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
+        try {
+            DefaultBotOptions botOptions = ApiContext.getInstance(DefaultBotOptions.class);
 
-                Authenticator.setDefault(new Authenticator() {
-                    @Override
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(proxyUsername, proxyPassword.toCharArray());
-                    }
-                });
-
-                botOptions.setProxyHost(proxyHost);
-                botOptions.setProxyPort(proxyPort);
-                botOptions.setProxyType(DefaultBotOptions.ProxyType.SOCKS5);
-
-                TestBot bot = new TestBot(botName, botToken, botOptions, botService);
-                telegramBotsApi.registerBot(bot);
-                botRegistry.getBots().put("telegram", bot);
-            } catch (Exception e) {
-                log.error("Error starting bot", e);
-            }
+            TestBot bot = new TestBot(botName, botToken, botOptions, botService);
+            telegramBotsApi.registerBot(bot);
+            botRegistry.getBots().put("telegram", bot);
+        } catch (Exception e) {
+            log.error("Error starting bot", e);
         }
     }
 }
