@@ -8,6 +8,7 @@ import org.teomant.appointment.appointment.domain.repository.AppointmentReposito
 import org.teomant.appointment.appointment.persistance.mapping.AppointmentMapper;
 import org.teomant.appointment.appointment.persistance.model.AppointmentEntity;
 import org.teomant.appointment.appointment.persistance.model.OptionEntity;
+import org.teomant.appointment.exception.AppointmentException;
 import org.teomant.appointment.vote.persistance.mapping.VoteMapper;
 
 import javax.transaction.Transactional;
@@ -34,12 +35,12 @@ public class AppointmentRepositoryAdapter implements AppointmentRepository {
                 .filter(option -> option.getId() != null)
                 .peek(option -> {
                     OptionEntity optionEntity = optionEntityJpaRepository.findById(option.getId())
-                            .orElseThrow(IllegalArgumentException::new);
+                            .orElseThrow(() -> new AppointmentException("Can`t find option"));
 
                     AppointmentEntity storedOptionAppointment = optionEntity.getAppointment();
 
                     if (storedOptionAppointment == null || !storedOptionAppointment.getId().equals(appointment.getId())) {
-                        throw new IllegalArgumentException();
+                        throw new AppointmentException("Trying to move option from one appointment to another");
                     }
                     option.setVotes(optionEntity.getVotes().stream().map(voteMapper::toModel).collect(Collectors.toList()));
                 })
@@ -74,6 +75,6 @@ public class AppointmentRepositoryAdapter implements AppointmentRepository {
     }
 
     public AppointmentEntity findById(Long id) {
-        return appointmentEntityJpaRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        return appointmentEntityJpaRepository.findById(id).orElseThrow(() -> new AppointmentException("Can`t find appointment"));
     }
 }

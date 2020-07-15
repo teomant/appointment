@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.teomant.appointment.appointment.domain.model.Appointment;
 import org.teomant.appointment.bot.TestBot;
 import org.teomant.appointment.bot.registry.BotRegistry;
+import org.teomant.appointment.exception.AppointmentException;
 import org.teomant.appointment.notification.domain.model.Notification;
 import org.teomant.appointment.notification.domain.repository.NotificationRepository;
 import org.teomant.appointment.notification.domain.service.NotificationService;
@@ -67,7 +68,7 @@ public class NotificationServiceImpl implements NotificationService {
         Notification stored = notificationRepository.findById(notificationId);
 
         if (!rightChecker.checkCanPerform(EntityNameEnum.NOTIFICATION, ActionNameEnum.MODIFY, (SiteUser) stored.getUser(), currentSiteUser)) {
-            throw new IllegalArgumentException();
+            throw new AppointmentException("Can`t do");
         }
 
         stored.setDelivered(true);

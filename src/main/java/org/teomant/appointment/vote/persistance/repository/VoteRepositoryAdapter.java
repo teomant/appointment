@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.teomant.appointment.appointment.persistance.model.OptionEntity;
 import org.teomant.appointment.appointment.persistance.repository.OptionEntityJpaRepository;
+import org.teomant.appointment.exception.AppointmentException;
 import org.teomant.appointment.user.persistance.model.UserEntity;
 import org.teomant.appointment.vote.domain.model.Vote;
 import org.teomant.appointment.vote.domain.repository.VoteRepository;
@@ -24,9 +25,10 @@ public class VoteRepositoryAdapter implements VoteRepository {
     @Override
     public Vote save(Vote vote) {
 
-        OptionEntity option = optionEntityJpaRepository.findById(vote.getOptionId()).orElseThrow(IllegalArgumentException::new);
+        OptionEntity option = optionEntityJpaRepository.findById(vote.getOptionId())
+                .orElseThrow(() -> new AppointmentException("Can`t find option"));
         if (option.getAppointment() == null || option.getAppointment().isDone()) {
-            throw new IllegalArgumentException();
+            throw new AppointmentException("Can`t save");
         }
 
         if (vote.getUser() != null) {
@@ -52,7 +54,8 @@ public class VoteRepositoryAdapter implements VoteRepository {
 
     @Override
     public void delete(Vote vote) {
-        VoteEntity voteEntity = voteEntityJpaRepository.findById(vote.getId()).orElseThrow(IllegalArgumentException::new);
+        VoteEntity voteEntity = voteEntityJpaRepository.findById(vote.getId())
+                .orElseThrow(() -> new AppointmentException("Can`t delete"));
 
         voteEntityJpaRepository.delete(voteEntity);
         voteEntityJpaRepository.flush();
@@ -60,6 +63,7 @@ public class VoteRepositoryAdapter implements VoteRepository {
 
     @Override
     public Vote findById(Long id) {
-        return voteMapper.toModel(voteEntityJpaRepository.findById(id).orElseThrow(IllegalArgumentException::new));
+        return voteMapper.toModel(voteEntityJpaRepository.findById(id)
+                .orElseThrow(() -> new AppointmentException("Can`t find")));
     }
 }

@@ -2,6 +2,7 @@ package org.teomant.appointment.vote.domain.service.imp;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.teomant.appointment.exception.AppointmentException;
 import org.teomant.appointment.security.domain.model.ActionNameEnum;
 import org.teomant.appointment.security.domain.model.EntityNameEnum;
 import org.teomant.appointment.security.service.RightChecker;
@@ -27,7 +28,7 @@ public class VoteServiceImpl implements VoteService {
         Vote stored = voteRepository.findById(vote.getId());
 
         if (!rightChecker.checkCanPerform(EntityNameEnum.VOTE, ActionNameEnum.DELETE, (SiteUser) stored.getUser(), currentSiteUser)) {
-            throw new IllegalArgumentException();
+            throw new AppointmentException("Can`t delete vote");
         }
 
         voteRepository.delete(vote);

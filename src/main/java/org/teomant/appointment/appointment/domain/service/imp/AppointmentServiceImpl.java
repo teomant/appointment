@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.teomant.appointment.appointment.domain.model.Appointment;
 import org.teomant.appointment.appointment.domain.repository.AppointmentRepository;
 import org.teomant.appointment.appointment.domain.service.AppointmentService;
+import org.teomant.appointment.exception.AppointmentException;
 import org.teomant.appointment.security.domain.model.ActionNameEnum;
 import org.teomant.appointment.security.domain.model.EntityNameEnum;
 import org.teomant.appointment.security.service.RightChecker;
@@ -33,7 +34,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     private void validateCreate(Appointment appointment) {
         if (appointment.getTill().isBefore(OffsetDateTime.now())) {
-            throw new IllegalArgumentException();
+            throw new AppointmentException("Till before current");
         }
     }
 
@@ -49,7 +50,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         if (!rightChecker.checkCanPerform(EntityNameEnum.APPOINTMENT, ActionNameEnum.MODIFY, (SiteUser) appointment.getUser(), currentSiteUser)
                 || appointment.isDone()) {
-            throw new IllegalArgumentException();
+            throw new AppointmentException("Can`t update");
         }
 
         appointment.setComment(update.getComment());
