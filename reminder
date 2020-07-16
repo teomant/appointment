@@ -1,0 +1,4 @@
+For correct work add env variables bot.name and bot.token.
+
+Dockerization example
+sudo docker run --name appointment -p 8080:8080 -e bot.name="name" -e bot.token="token" --link=postgres appointment:0.0.1
