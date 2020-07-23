@@ -1,11 +1,11 @@
 package org.teomant.appointment.user.persistance.mapper;
 
 import org.teomant.appointment.security.persistance.mapper.RoleMapper;
+import org.teomant.appointment.user.domain.model.ClientUser;
 import org.teomant.appointment.user.domain.model.SiteUser;
-import org.teomant.appointment.user.domain.model.TelegramBotUser;
 import org.teomant.appointment.user.domain.model.User;
+import org.teomant.appointment.user.persistance.model.ClientUserEntity;
 import org.teomant.appointment.user.persistance.model.SiteUserEntity;
-import org.teomant.appointment.user.persistance.model.TelegramBotUserEntity;
 import org.teomant.appointment.user.persistance.model.UserEntity;
 
 import java.util.stream.Collectors;
@@ -14,12 +14,11 @@ public class UserMapper {
 
     private final RoleMapper roleMapper = new RoleMapper();
 
-    public TelegramBotUser toModel(TelegramBotUserEntity entity) {
-        TelegramBotUser model = new TelegramBotUser();
+    public ClientUser toModel(ClientUserEntity entity) {
+        ClientUser model = new ClientUser();
         model.setId(entity.getId());
-        model.setUsername(entity.getName() != null ? entity.getName() : entity.getLogin());
-        model.setChatId(entity.getChatId());
-        model.setLogin(entity.getLogin());
+        model.setUsername(entity.getUsername() != null ? entity.getUsername() : "Аноним");
+        model.setClientId(entity.getClientUserId());
         return model;
     }
 
@@ -38,8 +37,8 @@ public class UserMapper {
         if (entity instanceof SiteUserEntity) {
             return toModel((SiteUserEntity) entity);
         }
-        if (entity instanceof TelegramBotUserEntity) {
-            return toModel((TelegramBotUserEntity) entity);
+        if (entity instanceof ClientUserEntity) {
+            return toModel((ClientUserEntity) entity);
         }
 
         User model = new User();
@@ -56,11 +55,10 @@ public class UserMapper {
         return entity;
     }
 
-    public TelegramBotUserEntity toEntity(TelegramBotUser model) {
-        TelegramBotUserEntity entity = new TelegramBotUserEntity();
+    public ClientUserEntity toEntity(ClientUser model) {
+        ClientUserEntity entity = new ClientUserEntity();
         entity.setId(model.getId());
-        entity.setName(model.getUsername());
-        entity.setLogin(model.getLogin());
+        entity.setUsername(model.getUsername());
 
         return entity;
     }

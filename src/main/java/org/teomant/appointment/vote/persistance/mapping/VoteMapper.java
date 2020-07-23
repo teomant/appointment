@@ -1,10 +1,10 @@
 package org.teomant.appointment.vote.persistance.mapping;
 
+import org.teomant.appointment.user.domain.model.ClientUser;
 import org.teomant.appointment.user.domain.model.SiteUser;
-import org.teomant.appointment.user.domain.model.TelegramBotUser;
 import org.teomant.appointment.user.persistance.mapper.UserMapper;
+import org.teomant.appointment.user.persistance.model.ClientUserEntity;
 import org.teomant.appointment.user.persistance.model.SiteUserEntity;
-import org.teomant.appointment.user.persistance.model.TelegramBotUserEntity;
 import org.teomant.appointment.vote.domain.model.Vote;
 import org.teomant.appointment.vote.persistance.model.VoteEntity;
 
@@ -21,8 +21,8 @@ public class VoteMapper {
             if (entity.getUser() instanceof SiteUserEntity) {
                 model.setUser(userMapper.toModel((SiteUserEntity) entity.getUser()));
             }
-            if (entity.getUser() instanceof TelegramBotUserEntity) {
-                model.setUser(userMapper.toModel((TelegramBotUserEntity) entity.getUser()));
+            if (entity.getUser() instanceof ClientUserEntity) {
+                model.setUser(userMapper.toModel((ClientUserEntity) entity.getUser()));
             }
 
         }
@@ -39,8 +39,8 @@ public class VoteMapper {
         if (model.getUser() != null) {
             if (model.getUser() instanceof SiteUser)
                 entity.setUser(userMapper.toEntity((SiteUser) model.getUser()));
-            if (model.getUser() instanceof TelegramBotUser)
-                entity.setUser(userMapper.toEntity((TelegramBotUser) model.getUser()));
+            if (model.getUser() instanceof ClientUser)
+                entity.setUser(userMapper.toEntity((ClientUser) model.getUser()));
         }
 
         return entity;

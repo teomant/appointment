@@ -20,6 +20,9 @@ public class UserEntity {
     @Column(name = "id", updatable = false, insertable = false)
     private Long id;
 
+    @Column
+    private String username;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",

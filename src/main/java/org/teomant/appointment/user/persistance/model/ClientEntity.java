@@ -10,15 +10,13 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
-@Table(name = "telegram_users")
-public class TelegramBotUserEntity extends UserEntity {
+@Table(name = "clients")
+public class ClientEntity extends UserEntity {
 
     @Column
-    private String name;
+    private String password;
 
     @Column
-    private String login;
+    private String username;
 
-    @Column(name = "chat_id")
-    private Long chatId;
 }

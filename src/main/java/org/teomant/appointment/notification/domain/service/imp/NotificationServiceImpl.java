@@ -3,8 +3,6 @@ package org.teomant.appointment.notification.domain.service.imp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.teomant.appointment.appointment.domain.model.Appointment;
-import org.teomant.appointment.bot.TestBot;
-import org.teomant.appointment.bot.registry.BotRegistry;
 import org.teomant.appointment.exception.AppointmentException;
 import org.teomant.appointment.notification.domain.model.Notification;
 import org.teomant.appointment.notification.domain.repository.NotificationRepository;
@@ -13,7 +11,6 @@ import org.teomant.appointment.security.domain.model.ActionNameEnum;
 import org.teomant.appointment.security.domain.model.EntityNameEnum;
 import org.teomant.appointment.security.service.RightChecker;
 import org.teomant.appointment.user.domain.model.SiteUser;
-import org.teomant.appointment.user.domain.model.TelegramBotUser;
 import org.teomant.appointment.user.domain.model.User;
 
 import java.util.Collection;
@@ -25,7 +22,6 @@ public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationRepository notificationRepository;
     private final RightChecker rightChecker;
-    private final BotRegistry botRegistry;
 
     @Override
     public void createFromAppointment(Appointment appointment) {
@@ -52,11 +48,6 @@ public class NotificationServiceImpl implements NotificationService {
 
             if (user instanceof SiteUser) {
                 notification.setDelivered(false);
-            }
-            if (user instanceof TelegramBotUser) {
-                notification.setDelivered(true);
-                TestBot bot = (TestBot) botRegistry.getBots().get("telegram");
-                bot.sendNotification(notification, (TelegramBotUser) user);
             }
 
             notificationRepository.save(notification);

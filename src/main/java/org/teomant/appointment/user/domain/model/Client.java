@@ -5,6 +5,5 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SiteUser extends UserDetailImpl {
-
+public class Client extends UserDetailImpl {
 }

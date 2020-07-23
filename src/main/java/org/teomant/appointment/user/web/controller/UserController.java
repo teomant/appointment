@@ -26,7 +26,8 @@ public class UserController {
         SiteUserEntity userEntity = new SiteUserEntity();
         userEntity.setUsername(dto.getUsername());
         userEntity.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
-        userEntity.setRoles(Collections.singleton(roleEntityJpaRepository.findByName("ROLE_USER")));
+        String roleName = siteUserEntityJpaRepository.count() == 0 ? "ROLE_ADMIN" : "ROLE_USER";
+        userEntity.setRoles(Collections.singleton(roleEntityJpaRepository.findByName(roleName)));
         siteUserEntityJpaRepository.save(userEntity);
         return ResponseEntity.ok().build();
     }
