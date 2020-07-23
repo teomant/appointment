@@ -8,7 +8,6 @@ import org.teomant.appointment.notification.domain.service.NotificationService;
 import org.teomant.appointment.notification.web.dto.NotificationDto;
 import org.teomant.appointment.notification.web.mapping.NotificationDtoMapper;
 import org.teomant.appointment.user.domain.model.SiteUser;
-import org.teomant.appointment.user.domain.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +19,6 @@ public class NotificationRestController {
 
     private final NotificationService notificationService;
     private final NotificationDtoMapper notificationDtoMapper = new NotificationDtoMapper();
-    private final UserRepository userRepository;
 
     @GetMapping("/get")
     public List<NotificationDto> getNotifications(@RequestParam(required = false) Boolean delivered) {

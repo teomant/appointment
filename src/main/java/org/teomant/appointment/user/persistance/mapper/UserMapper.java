@@ -1,9 +1,8 @@
 package org.teomant.appointment.user.persistance.mapper;
 
 import org.teomant.appointment.security.persistance.mapper.RoleMapper;
-import org.teomant.appointment.user.domain.model.ClientUser;
-import org.teomant.appointment.user.domain.model.SiteUser;
-import org.teomant.appointment.user.domain.model.User;
+import org.teomant.appointment.user.domain.model.*;
+import org.teomant.appointment.user.persistance.model.ClientEntity;
 import org.teomant.appointment.user.persistance.model.ClientUserEntity;
 import org.teomant.appointment.user.persistance.model.SiteUserEntity;
 import org.teomant.appointment.user.persistance.model.UserEntity;
@@ -33,6 +32,17 @@ public class UserMapper {
         return model;
     }
 
+    public Client toModel(ClientEntity entity) {
+        Client model = new Client();
+        model.setId(entity.getId());
+        model.setUsername(entity.getUsername());
+        if (entity.getRoles() != null) {
+            model.setRoles(entity.getRoles().stream().map(roleMapper::toModel).collect(Collectors.toList()));
+        }
+        model.setPassword(entity.getPassword());
+        return model;
+    }
+
     public User toModel(UserEntity entity) {
         if (entity instanceof SiteUserEntity) {
             return toModel((SiteUserEntity) entity);
@@ -40,10 +50,24 @@ public class UserMapper {
         if (entity instanceof ClientUserEntity) {
             return toModel((ClientUserEntity) entity);
         }
+        if (entity instanceof ClientEntity) {
+            return toModel((ClientEntity) entity);
+        }
 
         User model = new User();
         model.setId(entity.getId());
         return model;
+    }
+
+    public UserDetailImpl toUserDetails(UserEntity entity) {
+        if (entity instanceof SiteUserEntity) {
+            return toModel((SiteUserEntity) entity);
+        }
+        if (entity instanceof ClientEntity) {
+            return toModel((ClientEntity) entity);
+        }
+
+        return null;
     }
 
     public SiteUserEntity toEntity(SiteUser model) {

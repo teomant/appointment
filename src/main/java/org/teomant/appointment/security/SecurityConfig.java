@@ -47,6 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .antMatchers("/rest/appointment/deleteVote/**")
                 .authenticated()
+                .antMatchers("/api/**")
+                .hasAnyRole("ADMIN", "CLIENT")
                 .anyRequest()
                 .permitAll()
                 .and()

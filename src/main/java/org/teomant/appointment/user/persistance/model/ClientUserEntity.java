@@ -17,4 +17,6 @@ public class ClientUserEntity extends UserEntity {
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
     private ClientEntity clientEntity;
+
+    //Тут можно было бы добавить переменную для isAccountNonLocked. Возможно, когда-нибудь он она появится.
 }
