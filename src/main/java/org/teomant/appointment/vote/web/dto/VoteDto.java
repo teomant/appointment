@@ -10,4 +10,5 @@ public class VoteDto {
     private String comment;
     private String type;
     private String voterName;
+    private Long voterId;
 }

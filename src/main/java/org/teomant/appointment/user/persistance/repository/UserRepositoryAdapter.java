@@ -9,7 +9,7 @@ import org.teomant.appointment.user.persistance.model.UserEntity;
 
 @Repository
 @RequiredArgsConstructor
-public class SiteUserRepositoryAdapter implements UserRepository {
+public class UserRepositoryAdapter implements UserRepository {
 
     private final SiteUserEntityJpaRepository siteUserEntityJpaRepository;
     private final ClientEntityJpaRepository clientEntityJpaRepository;
