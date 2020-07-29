@@ -2,14 +2,21 @@ package org.teomant.appointment.user.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.teomant.appointment.exception.AppointmentException;
+import org.teomant.appointment.security.jwt.JwtUtils;
 import org.teomant.appointment.security.persistance.repository.RoleEntityJpaRepository;
 import org.teomant.appointment.user.domain.model.SiteUser;
+import org.teomant.appointment.user.domain.model.UserDetailImpl;
 import org.teomant.appointment.user.persistance.model.ClientEntity;
 import org.teomant.appointment.user.persistance.model.SiteUserEntity;
 import org.teomant.appointment.user.persistance.repository.ClientEntityJpaRepository;
@@ -27,6 +34,7 @@ public class UserController {
     private final ClientEntityJpaRepository clientEntityJpaRepository;
     private final RoleEntityJpaRepository roleEntityJpaRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/user/register")
     public ResponseEntity register(@RequestBody UserDto dto) {
@@ -52,7 +60,7 @@ public class UserController {
         return userInfoDto;
     }
 
-    @PostMapping("/user/register_client")
+    @PostMapping("/client/register_client")
     public ResponseEntity registerClient(@RequestBody UserDto dto) {
         ClientEntity userEntity = new ClientEntity();
         userEntity.setUsername(dto.getUsername());
@@ -60,5 +68,22 @@ public class UserController {
         userEntity.setRoles(Collections.singleton(roleEntityJpaRepository.findByName("ROLE_CLIENT")));
         clientEntityJpaRepository.save(userEntity);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/client/login_client")
+    public ResponseEntity loginClient(@RequestBody UserDto dto) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
+
+        String jwt = JwtUtils.generateJwtToken(authentication);
+
+        UserDetailImpl userDetails = (UserDetailImpl) authentication.getPrincipal();
+        if (userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .noneMatch(role -> role.equals("ROLE_CLIENT"))) {
+            throw new AppointmentException("No client role");
+        }
+
+        return ResponseEntity.ok(jwt);
     }
 }

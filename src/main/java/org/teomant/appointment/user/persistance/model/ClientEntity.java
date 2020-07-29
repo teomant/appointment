@@ -19,4 +19,5 @@ public class ClientEntity extends UserEntity {
     @Column
     private String username;
 
+    //Тут можно было бы добавить переменную для isAccountNonLocked. Возможно, когда-нибудь он она появится.
 }
