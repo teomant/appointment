@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class ClientUser extends User {
-    private Long clientId;
+    private Long clientUserId;
     private Client client;
 }

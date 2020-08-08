@@ -45,21 +45,22 @@ public class NotificationServiceImpl implements NotificationService {
             notification.setComment("voter notification");
             notification.setAppointment(appointment);
             notification.setUser(user);
-
-            if (user instanceof SiteUser) {
-                notification.setDelivered(false);
-            }
+            notification.setDelivered(false);
 
             notificationRepository.save(notification);
         });
     }
 
     @Override
-    public void markDelivered(Long notificationId, SiteUser currentSiteUser) {
+    public void markDelivered(Long notificationId, User currentUser) {
         Notification stored = notificationRepository.findById(notificationId);
 
-        if (!rightChecker.checkCanPerform(EntityNameEnum.NOTIFICATION, ActionNameEnum.MODIFY, (SiteUser) stored.getUser(), currentSiteUser)) {
-            throw new AppointmentException("Can`t do");
+        if (currentUser instanceof SiteUser) {
+            if (!rightChecker.checkCanPerform(EntityNameEnum.NOTIFICATION, ActionNameEnum.MODIFY,
+                    (SiteUser) stored.getUser(),
+                    (SiteUser) currentUser)) {
+                throw new AppointmentException("Can`t do");
+            }
         }
 
         stored.setDelivered(true);
@@ -67,7 +68,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<Notification> findByUser(SiteUser siteUser, Boolean includeDelivered) {
-        return notificationRepository.findByUser(siteUser, includeDelivered);
+    public List<Notification> findByUser(User user, Boolean includeDelivered) {
+        return notificationRepository.findByUser(user, includeDelivered);
     }
 }

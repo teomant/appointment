@@ -17,7 +17,7 @@ public class UserMapper {
         ClientUser model = new ClientUser();
         model.setId(entity.getId());
         model.setUsername(entity.getUsername() != null ? entity.getUsername() : "Аноним");
-        model.setClientId(entity.getClientUserId());
+        model.setClientUserId(entity.getClientUserId());
         return model;
     }
 
@@ -70,6 +70,22 @@ public class UserMapper {
         return null;
     }
 
+    public UserEntity toEntity(User model) {
+        if (model instanceof SiteUser) {
+            return toEntity((SiteUser) model);
+        }
+        if (model instanceof ClientUser) {
+            return toEntity((ClientUser) model);
+        }
+        if (model instanceof Client) {
+            return toEntity((Client) model);
+        }
+
+        UserEntity entity = new UserEntity();
+        entity.setId(model.getId());
+        return entity;
+    }
+
     public SiteUserEntity toEntity(SiteUser model) {
         SiteUserEntity entity = new SiteUserEntity();
         entity.setId(model.getId());
@@ -81,6 +97,15 @@ public class UserMapper {
 
     public ClientUserEntity toEntity(ClientUser model) {
         ClientUserEntity entity = new ClientUserEntity();
+        entity.setId(model.getId());
+        entity.setUsername(model.getUsername());
+        entity.setClientUserId(model.getClientUserId());
+
+        return entity;
+    }
+
+    public ClientEntity toEntity(Client model) {
+        ClientEntity entity = new ClientEntity();
         entity.setId(model.getId());
         entity.setUsername(model.getUsername());
 
