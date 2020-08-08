@@ -16,7 +16,4 @@ public class SiteUserEntity extends UserEntity {
     @Column
     private String password;
 
-    @Column
-    private String username;
-
 }

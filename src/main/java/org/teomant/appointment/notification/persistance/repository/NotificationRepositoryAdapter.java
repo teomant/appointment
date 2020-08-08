@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.teomant.appointment.notification.domain.model.Notification;
 import org.teomant.appointment.notification.domain.repository.NotificationRepository;
 import org.teomant.appointment.notification.persistance.mapping.NotificationMapper;
-import org.teomant.appointment.user.domain.model.SiteUser;
+import org.teomant.appointment.user.domain.model.User;
 import org.teomant.appointment.user.persistance.mapper.UserMapper;
 
 import java.util.List;
@@ -35,13 +35,13 @@ public class NotificationRepositoryAdapter implements NotificationRepository {
     }
 
     @Override
-    public List<Notification> findByUser(SiteUser siteUser, Boolean includeDelivered) {
+    public List<Notification> findByUser(User user, Boolean includeDelivered) {
         if (includeDelivered != null) {
-            return notificationEntityJpaRepository.findByUserAndDelivered(userMapper.toEntity(siteUser), includeDelivered).stream()
+            return notificationEntityJpaRepository.findByUserAndDelivered(userMapper.toEntity(user), includeDelivered).stream()
                     .map(notificationMapper::toModel)
                     .collect(Collectors.toList());
         } else {
-            return notificationEntityJpaRepository.findByUser(userMapper.toEntity(siteUser)).stream()
+            return notificationEntityJpaRepository.findByUser(userMapper.toEntity(user)).stream()
                     .map(notificationMapper::toModel)
                     .collect(Collectors.toList());
         }

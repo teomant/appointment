@@ -44,6 +44,7 @@ public class VoteDtoMapper {
         dto.setType(model.getType().name());
 
         dto.setVoterName(model.getUser() != null ? model.getUser().getUsername() : "");
+        dto.setVoterId(model.getUser() != null ? model.getUser().getId() : null);
 
         return dto;
     }
