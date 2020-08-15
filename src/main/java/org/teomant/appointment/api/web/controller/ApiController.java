@@ -15,7 +15,6 @@ import org.teomant.appointment.notification.web.mapping.NotificationDtoMapper;
 import org.teomant.appointment.security.persistance.repository.RoleEntityJpaRepository;
 import org.teomant.appointment.user.domain.model.Client;
 import org.teomant.appointment.user.domain.model.ClientUser;
-import org.teomant.appointment.user.domain.model.SiteUser;
 import org.teomant.appointment.user.persistance.mapper.UserMapper;
 import org.teomant.appointment.user.persistance.model.ClientEntity;
 import org.teomant.appointment.user.persistance.model.ClientUserEntity;
@@ -103,15 +102,21 @@ public class ApiController {
     }
 
     @PostMapping("/deleteVote/{id}")
-    public void deleteVote(@PathVariable Long id) {
+    public void deleteVote(@PathVariable Long id, @RequestParam Long userId) {
 
+        ClientEntity clientEntity = new ClientEntity();
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        SiteUser currentSiteUser = null;
-        if (principal instanceof SiteUser) {
-            currentSiteUser = (SiteUser) principal;
+        Client client = null;
+        if (principal instanceof Client) {
+            client = (Client) principal;
         }
+        clientEntity.setId(client == null ? null : client.getId());
 
-        voteService.delete(voteDtoMapper.fromDeleteToModel(id), currentSiteUser);
+        ClientUser clientUser = userMapper.toModel(
+                clientUserEntityJpaRepository.findByClientUserIdAndClientEntity(userId, clientEntity)
+        );
+
+        voteService.delete(voteDtoMapper.fromDeleteToModel(id), clientUser);
     }
 
     @GetMapping("/notification")

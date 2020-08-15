@@ -5,21 +5,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.teomant.appointment.security.domain.model.ActionNameEnum;
 import org.teomant.appointment.security.domain.model.EntityNameEnum;
-import org.teomant.appointment.user.domain.model.SiteUser;
+import org.teomant.appointment.user.domain.model.User;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class RightChecker {
 
-    public boolean checkCanPerform(EntityNameEnum entity, ActionNameEnum action, SiteUser owner, SiteUser currentSiteUser) {
+    public boolean checkCanPerform(EntityNameEnum entity, ActionNameEnum action, User owner, User currentUser) {
 
         boolean result = true;
 
-        if (currentSiteUser == null
-                || (owner != null && owner.equals(currentSiteUser) && !canOwn(currentSiteUser, entity, action) && !canAny(currentSiteUser, entity, action)
-                || (owner != null && !owner.equals(currentSiteUser) && !canAny(currentSiteUser, entity, action)))
-                || (owner == null && !canAny(currentSiteUser, entity, action))
+        if (currentUser == null
+                || (owner != null && owner.equals(currentUser) && !canOwn(currentUser, entity, action) && !canAny(currentUser, entity, action)
+                || (owner != null && !owner.equals(currentUser) && !canAny(currentUser, entity, action)))
+                || (owner == null && !canAny(currentUser, entity, action))
         ) {
             result = false;
         }
@@ -27,20 +27,20 @@ public class RightChecker {
         return result;
     }
 
-    private boolean canOwn(SiteUser currentSiteUser, EntityNameEnum entity, ActionNameEnum action) {
+    private boolean canOwn(User currentUser, EntityNameEnum entity, ActionNameEnum action) {
         boolean own = false;
         try {
-            own = currentSiteUser.getRoles().stream()
+            own = currentUser.getRoles().stream()
                     .anyMatch(role -> role.getPrivileges().stream()
                             .anyMatch(privilege -> privilege.getAction().equals(modifyToOwn(action)) && privilege.getEntity().equals(entity)));
         } catch (Exception e) {
             log.info("no _OWN for " + action.name());
         }
-        return canCommon(currentSiteUser, entity, action) || own;
+        return canCommon(currentUser, entity, action) || own;
     }
 
-    private boolean canCommon(SiteUser currentSiteUser, EntityNameEnum entity, ActionNameEnum action) {
-        return currentSiteUser.getRoles().stream()
+    private boolean canCommon(User currentUser, EntityNameEnum entity, ActionNameEnum action) {
+        return currentUser.getRoles().stream()
                 .anyMatch(role -> role.getPrivileges().stream()
                         .anyMatch(privilege -> privilege.getAction().equals(action) && privilege.getEntity().equals(entity)));
     }
@@ -49,16 +49,16 @@ public class RightChecker {
         return ActionNameEnum.valueOf(action.name() + "_OWN");
     }
 
-    private boolean canAny(SiteUser currentSiteUser, EntityNameEnum entity, ActionNameEnum action) {
+    private boolean canAny(User currentUser, EntityNameEnum entity, ActionNameEnum action) {
         boolean any = false;
         try {
-            any = currentSiteUser.getRoles().stream()
+            any = currentUser.getRoles().stream()
                     .anyMatch(role -> role.getPrivileges().stream()
                             .anyMatch(privilege -> privilege.getAction().equals(modifyToAny(action)) && privilege.getEntity().equals(entity)));
         } catch (Exception e) {
             log.info("no _ANY for " + action.name());
         }
-        return canCommon(currentSiteUser, entity, action) || any;
+        return canCommon(currentUser, entity, action) || any;
     }
 
     private ActionNameEnum modifyToAny(ActionNameEnum action) {

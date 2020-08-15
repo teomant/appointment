@@ -10,7 +10,6 @@ import org.teomant.appointment.notification.domain.service.NotificationService;
 import org.teomant.appointment.security.domain.model.ActionNameEnum;
 import org.teomant.appointment.security.domain.model.EntityNameEnum;
 import org.teomant.appointment.security.service.RightChecker;
-import org.teomant.appointment.user.domain.model.SiteUser;
 import org.teomant.appointment.user.domain.model.User;
 
 import java.util.Collection;
@@ -55,12 +54,10 @@ public class NotificationServiceImpl implements NotificationService {
     public void markDelivered(Long notificationId, User currentUser) {
         Notification stored = notificationRepository.findById(notificationId);
 
-        if (currentUser instanceof SiteUser) {
-            if (!rightChecker.checkCanPerform(EntityNameEnum.NOTIFICATION, ActionNameEnum.MODIFY,
-                    (SiteUser) stored.getUser(),
-                    (SiteUser) currentUser)) {
-                throw new AppointmentException("Can`t do");
-            }
+        if (!rightChecker.checkCanPerform(EntityNameEnum.NOTIFICATION, ActionNameEnum.MODIFY,
+                stored.getUser(),
+                currentUser)) {
+            throw new AppointmentException("Can`t do");
         }
 
         stored.setDelivered(true);

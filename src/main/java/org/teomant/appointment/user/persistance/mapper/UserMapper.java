@@ -18,6 +18,9 @@ public class UserMapper {
         model.setId(entity.getId());
         model.setUsername(entity.getUsername() != null ? entity.getUsername() : "Аноним");
         model.setClientUserId(entity.getClientUserId());
+        if (entity.getRoles() != null) {
+            model.setRoles(entity.getRoles().stream().map(roleMapper::toModel).collect(Collectors.toList()));
+        }
         return model;
     }
 

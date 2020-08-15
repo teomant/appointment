@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 public class UserDetailImpl extends User implements UserDetails {
 
     private String password;
-    private Collection<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
